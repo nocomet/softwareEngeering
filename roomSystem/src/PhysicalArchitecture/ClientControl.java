@@ -8,6 +8,7 @@ import ProblemDomain.User;
 
 public class ClientControl {
 
+	// server로 부터 받는 자료들을 임시 저장하는 collector.
 	private ArrayList<roomList> RList;
 	private ArrayList<String> SList;
 	private ArrayList<User> UList;
@@ -43,6 +44,8 @@ public class ClientControl {
 	{
 		BList.add(booklist);
 	}
+	
+	// 서버로부터 오기도 전에 collector로 접근하는 경우를 방지하기 위한 메소드
 	public Object getResponse()
 	{
 		int num=1;
@@ -83,6 +86,8 @@ public class ClientControl {
 		}
 		
 	}
+	
+	
 	public CbookList getBookListResponce()
 	{
 		int num=1;
@@ -207,6 +212,8 @@ public class ClientControl {
 			}
 		}
 	}
+	
+	// collector로 들어온 자료을 사용하고 제거를 하지만 한번 더 확인하기 위한 메소드
 	public void resetAll()
 	{
 		RList=new ArrayList<roomList>();

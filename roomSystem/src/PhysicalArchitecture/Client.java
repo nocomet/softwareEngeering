@@ -11,21 +11,26 @@ import ProblemDomain.User;
 import ProblemDomain.bookedRoom;
 import ProblemDomain.conferenceRoom;
 
-
+//
+// client 구현
+//
 public class Client
 {
 	Socket sock;
+	
+	// server로 부터 읽고 쓰기가 자유롭게 하기 위해 각각의 Multithread 구현
 	clientWrite clientW;
 	clientRead clientR;
+	
+	// client 명령어 처리를 위한 class 생성
 	private ClientControl cControl;
-
+	
 	public Client(String host, int port)
 	{
 		cControl=new ClientControl();
 		try {
 			System.out.println("-----클라이언트가 실행되었습니다.");
 			sock = new Socket(host, port);
-
 		} catch (IOException e) {
 			e.printStackTrace();
 		} 
@@ -62,7 +67,11 @@ public class Client
 		this.cControl = cControl;
 	}
 }
-class clientRead extends Thread//서버로 부터 메세지 받기.
+
+//
+// client sub class for to Read
+//
+class clientRead extends Thread
 {
 	Socket socket;
 	private ClientControl cControl;
@@ -72,10 +81,12 @@ class clientRead extends Thread//서버로 부터 메세지 받기.
 		this.socket=socket;
 		this.cControl=cControl;
 	}
+	
 	public void run()
 	{
 		try {
 			ObjectInputStream clientInputStream = new ObjectInputStream(socket.getInputStream());
+			// 읽을 임시적인 object 객체
 			Object temp;
 			while(true)
 			{
@@ -136,20 +147,28 @@ class clientRead extends Thread//서버로 부터 메세지 받기.
 
 
 }
-
+//
+//client sub class for to Send
+//
 class clientWrite extends Thread//서버로 메세지 보내기
 {
 	private Socket socket;
+	
+	// 보내는 객체의 type 따라 console을 생성
 	private String console;
 	private roomList console1;
 	private conferenceRoom console2;
 	private CbookList console3;
 	private bookedRoom console4;
+	
+	// GUI와 backgound의 연동을 위한 제어 변수
+	// 멀티스레드 제어를 하기 위해 선언
 	private boolean sendToReadyString;
 	private boolean sendToReadyList;
 	private boolean sendToReadyRoom;
 	private boolean sendToReadyBook;
 	private boolean sendToReadybookedRoom;
+	
 	public clientWrite(Socket socket)
 	{
 		this.socket=socket;

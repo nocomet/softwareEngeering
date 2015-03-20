@@ -23,6 +23,8 @@ public class ServerConsole {
 	{
 		objOutput=objout;
 	}
+	
+	// client에서 보낸 string 타입 명령어를 처리
 	public void handleMeg(String msg)
 	{
 		if (msg.startsWith("#regist")) {
@@ -84,8 +86,12 @@ public class ServerConsole {
 		booklist.addBook(book);
 		file.fileSave(booklist);
 	}
-	//----------------function------------//
-
+	
+	
+	//----------------function---------------//
+	//----------------기능적인 수행---------------//
+	//----------------function---------------//
+	
 	private void Login(String msg)
 	{
 		msg = msg.substring(6);
@@ -358,8 +364,13 @@ public class ServerConsole {
 		Rfile.fileSave(roomlist);
 		Bfile.fileSave(booklist);
 	}
+	
+	
 	//------------------send---------------//
-
+	//---------------client에게 전송-----------//
+	//------------------send---------------//
+	
+	
 	private void sendToClientUser(User user)
 	{
 		try {

@@ -5,6 +5,9 @@ import Foundation.CbookList;
 import ProblemDomain.bookedRoom;
 import ProblemDomain.conferenceRoom;
 
+//
+// 데이터 파일을 생성하기 위한 코드
+//
 public class testbook {
 	public static void main(String[] args)
 	{
