@@ -6,6 +6,11 @@ import Foundation.roomList;
 import ProblemDomain.conferenceRoom;
 import ProblemDomain.personalUser;
 
+
+//
+//데이터 파일을 생성하기 위한 코드
+//
+
 public class testSearch {
 	public static void main(String[] args)
 	{
