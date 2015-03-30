@@ -70,7 +70,7 @@ public class nomal_IndexPage extends JPanel {
 		// button Listener
 		btnJoin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				gui.moveJoinPage();
+				gui.moveJoinPage();		
 			}
 		});
 		btnLogin.addActionListener(new ActionListener() {

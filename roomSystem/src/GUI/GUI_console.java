@@ -48,7 +48,7 @@ public class GUI_console implements Serializable {
 		String msg = "#login" + e + "%" + pass;
 
 		client.sendToServer(msg);
-
+		
 		Object response = client.getcControl().getResponse();
 		if(response instanceof User)
 		{
