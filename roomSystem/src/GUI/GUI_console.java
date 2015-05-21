@@ -81,9 +81,9 @@ public class GUI_console implements Serializable {
 		String console = "#joinC"+e+"%"+pass+"%"+name+"%"+tel;
 		client.sendToServer(console);
 	}
-	public void searchRoom(String date, String address, String num)
+	public void searchRoom(String date, String city, String district, String num)//#흔정 ~ 파라미터 고침
 	{
-		String console = "#search" + date + "%" + address + "%" + num;
+		String console = "#search" + date + "%"+ city + "%" + district + "%" + num;
 		client.sendToServer(console);
 	}
 	public void updateInfo(String e, String oripw,String pass, String name, String tel)

@@ -18,17 +18,21 @@ import javax.swing.JTextField;
 import Foundation.roomList;
 import ProblemDomain.conferenceRoom;
 
-
+//#흔정 2015 05 21 수정
 public class B_InputPage extends JPanel{
 
 	private JPanel contentPane;
 	private JTextField room_txt;
 	private JTextField price_txt;
 	private JTextField photo_txt;
-	private JTextField addr_txt;
+//	private JTextField addr_txt;		#삭제
+	private JTextField addr_txt1;//		#추가
+	private JTextField addr_txt2;//		#추가
+	
 	private JTextField num_txt;
 	private GUI_console gui;
 	private roomList temp;
+	
 	public B_InputPage() {
 		gui=GUI_console.getInstance();	
 		setLayout(null);
@@ -50,7 +54,7 @@ public class B_InputPage extends JPanel{
 		room_txt.setColumns(10);
 		add(room_txt);
 
-		JLabel lblAddr = new JLabel("위치");
+		JLabel lblAddr = new JLabel("시, 구");
 		lblAddr.setForeground(new Color(44, 62, 80));
 		lblAddr.setFont(new Font("돋움", Font.PLAIN, 12));
 		lblAddr.setBounds(130, 181, 24, 15);
@@ -69,10 +73,15 @@ public class B_InputPage extends JPanel{
 		cbAddr2.setBounds(243, 173, 65, 30);
 		add(cbAddr2);
 
-		addr_txt = new JTextField();
-		addr_txt.setColumns(10);
-		addr_txt.setBounds(320, 174, 253, 30);
-		add(addr_txt);
+		addr_txt1 = new JTextField();
+		addr_txt1.setColumns(8);
+		addr_txt1.setBounds(300, 174, 253, 30);
+		add(addr_txt1);
+		
+		addr_txt2 = new JTextField();
+		addr_txt2.setColumns(8);
+		addr_txt2.setBounds(310, 174, 253, 30);
+		add(addr_txt2);
 
 		JLabel lblNum = new JLabel("수용인원");
 		lblNum.setForeground(new Color(44, 62, 80));
@@ -141,7 +150,11 @@ public class B_InputPage extends JPanel{
 		btnInsert.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				String buildingname = room_txt.getText();
-				String address = addr_txt.getText();
+//				String address = addr_txt.getText();		#삭제
+				
+				String city = addr_txt1.getText();//		#추가
+				String district = addr_txt2.getText();//		#추가
+				
 				String acceptpeonum= num_txt.getText();
 				String Rentcost = price_txt.getText();
 				String Ownername = gui.getUser().getName();
@@ -150,12 +163,12 @@ public class B_InputPage extends JPanel{
 				
 				if(photo_txt.getText().equals("파일경로"))
 				{
-					room = new conferenceRoom(buildingname, address, acceptpeonum, Rentcost, Ownername,ownerE);
+					room = new conferenceRoom(buildingname, city, district, acceptpeonum, Rentcost, Ownername,ownerE);
 				}
 				else
 				{
 					ImageIcon photo = new ImageIcon(photo_txt.getText());
-					room = new conferenceRoom(buildingname, address, acceptpeonum, Rentcost, Ownername,ownerE,photo);
+					room = new conferenceRoom(buildingname, city, district, acceptpeonum, Rentcost, Ownername,ownerE,photo);
 				}
 				
 				gui.sendToSeverRoom(room);

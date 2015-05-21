@@ -7,12 +7,14 @@ import java.util.ArrayList;
 import javax.swing.ImageIcon;
 
 import Foundation.CalendarInfo;
-
+//#흔정 2015 05 21 수정
 public class conferenceRoom implements Serializable {
 
 	
 	private String buildingname;
-	private String address;
+	//private String address;			#
+	private String city;			//#
+	private String district;		//#
 	private String acceptPeoNum;
 	private String rentCost;
 	private String ownerName;
@@ -24,12 +26,13 @@ public class conferenceRoom implements Serializable {
 	private ArrayList<CalendarInfo> calendarList;
 	
 	
-	
-	public conferenceRoom(String buildingname, String address, String acceptpeonum, 
+	//# 인자 변경
+	public conferenceRoom(String buildingname, String city, String district, String acceptpeonum, 
 			String Rentcost, String Ownername,String ownerE) {
 		
 		this.buildingname = buildingname;
-		this.address = address;
+		this.city = city;
+		this.district = district;
 		this.acceptPeoNum = acceptpeonum;
 		this.rentCost = Rentcost;
 		this.ownerName = Ownername;
@@ -43,11 +46,13 @@ public class conferenceRoom implements Serializable {
 		calendarList.add(firstCalendar);
 	}
 	
-	public conferenceRoom(String buildingname, String address, String acceptpeonum, 
+	//# 인자 변경
+	public conferenceRoom(String buildingname, String city, String district, String acceptpeonum, 
 			String Rentcost, String Ownername,String ownerE,ImageIcon photo) {
 		
 		this.buildingname = buildingname;
-		this.address = address;
+		this.city= city;
+		this.district = district;
 		this.acceptPeoNum = acceptpeonum;
 		this.rentCost = Rentcost;
 		this.ownerName = Ownername;
@@ -60,11 +65,13 @@ public class conferenceRoom implements Serializable {
 		calendarList = new ArrayList<CalendarInfo>();
 		calendarList.add(firstCalendar);
 	}
-	//----테스트용으로 만든 생성자
-	public conferenceRoom(String buildingname, String address, String acceptpeonum, 
+	//----테스트용으로 만든 생성자 
+	
+	public conferenceRoom(String buildingname, String city, String district, String acceptpeonum, 
 			String Rentcost, String Ownername) {
 		this.buildingname = buildingname;
-		this.address = address;
+		this.city= city;
+		this.district = district;
 		this.acceptPeoNum = acceptpeonum;
 		this.rentCost = Rentcost;
 		this.ownerName = Ownername;
@@ -77,10 +84,11 @@ public class conferenceRoom implements Serializable {
 			
 	}
 	//----테스트용으로 만든 생성자
-	public conferenceRoom(String buildingname, String address, String acceptpeonum, 
+	public conferenceRoom(String buildingname, String city, String district, String acceptpeonum, 
 			String Rentcost, String Ownername,int num) {
 		this.buildingname = buildingname;
-		this.address = address;
+		this.city= city;
+		this.district = district;
 		this.acceptPeoNum = acceptpeonum;
 		this.rentCost = Rentcost;
 		this.ownerName = Ownername;
@@ -93,10 +101,11 @@ public class conferenceRoom implements Serializable {
 			
 	}
 	//----테스트용으로 만든 생성자
-	public conferenceRoom(String buildingname, String address, String acceptpeonum, 
+	public conferenceRoom(String buildingname, String city, String district, String acceptpeonum, 
 			String Rentcost, String Ownername,String ownerE,int num,ImageIcon photo) {
 		this.buildingname = buildingname;
-		this.address = address;
+		this.city= city;
+		this.district = district;
 		this.acceptPeoNum = acceptpeonum;
 		this.rentCost = Rentcost;
 		this.ownerName = Ownername;
@@ -126,14 +135,30 @@ public class conferenceRoom implements Serializable {
 		this.ownerName= Ownername;
 	}	
 
+/*		#삭제
 	public String getAddress() {
 		return address;
 	}
-
+*/
+	//# 추가된 메소드 getCity, getDistrict
+	public String getCity(){
+		return city;		
+	}
+	public String getDistrict(){
+		return district;
+	}
+/*		#삭제
 	public void setAddress(String address) {
 		this.address = address;
 	}
-
+*/
+	//추가 메소드 setCity, setdistrict
+	public void setCity(String city){
+		this.city = city;
+	}
+	public void setdistrict(String district){
+		this.district = district;
+	}
 	public String getUserName() {
 		return userName;
 	}

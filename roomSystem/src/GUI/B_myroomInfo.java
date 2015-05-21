@@ -22,7 +22,7 @@ import javax.swing.JTextField;
 import net.miginfocom.swing.MigLayout;
 import Foundation.roomList;
 import ProblemDomain.conferenceRoom;
-
+//#ÈçÁ¤ 2015 05 21 ¼öÁ¤
 public class B_myroomInfo extends JPanel {
 	private JTextField num_txt;
 	private JPanel table_p = new JPanel();
@@ -136,7 +136,7 @@ public class B_myroomInfo extends JPanel {
 			lblPrice.setForeground(new Color(44, 62, 80));
 			lblPrice.setFont(new Font("µ¸¿ò", Font.PLAIN, 12));
 
-			JLabel lblAddr = new JLabel("ÁÖ¼Ò      : "+roomlist.getRoom(i).getAddress());
+			JLabel lblAddr = new JLabel("ÁÖ¼Ò      : "+roomlist.getRoom(i).getCity()+roomlist.getRoom(i).getDistrict());			//#¼öÁ¤
 			row_p.add(lblAddr, "cell 1 0,alignx left,growy");
 			lblAddr.setForeground(new Color(44, 62, 80));
 			lblAddr.setFont(new Font("µ¸¿ò", Font.PLAIN, 12));

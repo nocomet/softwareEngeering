@@ -14,7 +14,7 @@ import ProblemDomain.bookedRoom;
 import ProblemDomain.companyUser;
 import ProblemDomain.conferenceRoom;
 import ProblemDomain.personalUser;
-
+//#흔정 2015 05 21 수정
 public class ServerConsole {
 	private ObjectOutputStream objOutput;
 	
@@ -155,36 +155,49 @@ public class ServerConsole {
 		msg = msg.substring(7);
 		String[] token = msg.split("%");
 		String date = token[0];
-		String address = token[1];
+		//String address = token[1]; #삭제된 인자
 		String num;
+		
+		//#흔정~ 추가된 인자들
+		String city = token[1];
+		String district = token[2];
+		
 		if(token.length==2)
 			num="인원선택안함";
 		else
-			num = token[2];
+			num = token[3];//#흔정
 
 		boolean isDate = true;
-		boolean isAddress = true;
+		//boolean isAddress = true; #
+		boolean isCity = true;
+		boolean isDistrict = true;
 		boolean isNum = true;
 
 
-		if (address.equals("선택선택"))
-			isAddress = false;
+		if(city.equals("선택"))
+			isCity = false;
+		if(district.equals("선택"))
+			isDistrict = false;
+		//if (address.equals("선택선택"))			#
+		//	isAddress = false;					#
 		if (date.equals("2014#1#1"))
 			isDate = false;
 		if (num.equals("인원선택안함"))
 			isNum = false;
 
 		roomList temp = new roomList();
-		temp = SearchRoom(roomlist, address, date, num, isAddress, isDate,
+		temp = SearchRoom(roomlist, city, district , date, num, isCity, isDistrict, isDate,//	#
 				isNum);
 		sendToMessageOneClientRoomlist(temp);
 	}
-
-	public roomList SearchRoom(roomList roomlist, String Add, String date, String num, boolean isAddress, boolean isDate, boolean isNum) {
+	//메소드 인자 변경
+	public roomList SearchRoom(roomList roomlist, String city, String district , String date, String num, boolean checkCity, boolean checkDistrict, boolean checkDate, boolean checkNum) {
+		/*		#쓸모 없는 선언 삭제 
 		boolean checkAddress = isAddress;
 		boolean checkDate = isDate;
 		boolean checkNum = isNum;
-
+		 */
+		
 		roomList temp = roomlist;
 		if (checkDate) {
 			String[] tok = date.split("#");
@@ -193,18 +206,30 @@ public class ServerConsole {
 			String day = tok[2];
 			temp=searchForDate(year,month,day, temp);
 
+		}//# 메소드 변경 및 추가
+		if (checkCity & checkDistrict) {
+			temp = searchForCityNDistrict(city, district, temp);
 		}
-		if (checkAddress) {
-			temp = searchForAddress(Add, temp);
+		else if(checkCity & !checkDistrict){
+			temp = searchForCity(city, temp);			
 		}
-
-
-		if (checkNum) {
+		else if(!checkCity & checkDistrict){
+			//error	
+		}
+		else
+		{
+				//나오면 안되는 error
+		}
+		//#
+		
+		if (checkNum){
 			temp = searchForNum(num, temp);
 		}
 
 		return temp;
 	}
+	
+	/* # 삭제된 메소드
 	private roomList searchForAddress(String Add, roomList roomlist) {
 		roomList temp = new roomList();
 		for (int i = 0; i < roomlist.size(); i++) {
@@ -214,7 +239,29 @@ public class ServerConsole {
 		}
 		return temp;
 	}
-
+	 */
+	//# 추가 메소드 searchForCityNDistrict, searchForCity
+	private roomList searchForCityNDistrict(String city, String district, roomList roomlist) {
+		roomList temp = new roomList();
+		for (int i = 0; i < roomlist.size(); i++) {
+			if (city.equals(roomlist.getRoom(i).getCity())) 
+				if(district.equals(roomlist.getRoom(i).getDistrict()))
+						temp.addRoom(roomlist.getRoom(i));
+			
+		}
+		return temp;
+	}
+	
+	private roomList searchForCity(String city, roomList roomlist) {
+		roomList temp = new roomList();
+		for (int i = 0; i < roomlist.size(); i++) {
+			if (city.equals(roomlist.getRoom(i).getCity())) {
+				temp.addRoom(roomlist.getRoom(i));
+			}
+		}
+		return temp;
+	}
+	//#
 	private roomList searchForDate(String y, String m, String d, roomList roomlist) {
 		roomList temp = new roomList();
 		int year = Integer.parseInt(y);
@@ -247,7 +294,7 @@ public class ServerConsole {
 		}
 		return temp;
 	}
-
+	
 	private void ViewList(String msg, roomList roomlist){
 		msg = msg.substring(9);
 		String[] token = msg.split("%");

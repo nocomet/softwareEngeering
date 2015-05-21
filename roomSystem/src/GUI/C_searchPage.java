@@ -1,5 +1,5 @@
 package GUI;
-
+//#흔정 2015 05 21 수정
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -280,14 +280,16 @@ public class C_searchPage extends JPanel {
 						+ cbmonth.getSelectedItem().toString()+"#"
 						+ cbday.getSelectedItem().toString();
 
-				String address;
-				address = cbAddr1.getSelectedItem().toString()
-						+ cbAddr2.getSelectedItem().toString();
+				String city;
+				city = cbAddr1.getSelectedItem().toString();
+				
+				String district;
+				district = cbAddr2.getSelectedItem().toString();
 
 				String num;
 				num = num_txt.getText();
 
-				gui.searchRoom(date, address, num);
+				gui.searchRoom(date, city, district, num);////#흔정 ~ 파라미터 고침에 따른 input값 변경
 				roomList roomlist = gui.getRoomListResponse();
 				if(roomlist.size()==0)
 				{
@@ -300,7 +302,7 @@ public class C_searchPage extends JPanel {
 						newNum+=5;
 						String temp="";
 						temp+=newNum;
-						gui.searchRoom(date, address, temp);
+						gui.searchRoom(date, city, district, temp);
 						roomList templist = gui.getRoomListResponse();
 						resultPrint(templist);	
 					}
@@ -368,7 +370,7 @@ public class C_searchPage extends JPanel {
 			lblPrice.setForeground(new Color(44, 62, 80));
 			lblPrice.setFont(new Font("돋움", Font.PLAIN, 12));
 
-			JLabel lblAddr = new JLabel("주 소 :  "+roomlist.getRoom(i).getAddress());
+			JLabel lblAddr = new JLabel("주 소 :  "+roomlist.getRoom(i).getCity()+ roomlist.getRoom(i).getDistrict());			//#수정
 			row_p.add(lblAddr, "cell 1 0,alignx left,growy");
 			lblAddr.setForeground(new Color(44, 62, 80));
 			lblAddr.setFont(new Font("돋움", Font.PLAIN, 12));

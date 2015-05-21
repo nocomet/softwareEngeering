@@ -24,7 +24,7 @@ import net.miginfocom.swing.MigLayout;
 import Foundation.CbookList;
 import ProblemDomain.bookedRoom;
 import ProblemDomain.conferenceRoom;
-
+//#ÈçÁ¤ 2015 05 21 ¼öÁ¤
 public class C_mybookInfo extends JPanel {
 	private JTextField num_txt;
 	private JPanel table_p = new JPanel();
@@ -138,7 +138,7 @@ public class C_mybookInfo extends JPanel {
 			lblPrice.setForeground(new Color(44, 62, 80));
 			lblPrice.setFont(new Font("µ¸¿ò", Font.PLAIN, 12));
 
-			JLabel lblAddr = new JLabel("À§Ä¡: "+tempRoom.getAddress());
+			JLabel lblAddr = new JLabel("À§Ä¡: "+tempRoom.getCity()+ tempRoom.getDistrict());			//#¼öÁ¤
 			row_p.add(lblAddr, "cell 1 0,alignx left,growy");
 			lblAddr.setForeground(new Color(44, 62, 80));
 			lblAddr.setFont(new Font("µ¸¿ò", Font.PLAIN, 12));
