@@ -1,8 +1,13 @@
+//05_21 이신영
+//회원가입 제약사항
+
 package GUI;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -103,6 +108,8 @@ public class C_JoincPage extends JPanel {
 				gui.moveMain();
 			}
 		});
+		
+		
 		btnJoin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				String e=email_txt.getText();
@@ -110,26 +117,134 @@ public class C_JoincPage extends JPanel {
 				String pass_re=pwchk_txt.getText();
 				String name=name_txt.getText();
 				String tel=tel_txt.getText();
-
+				boolean check = true;
+				Pattern pattern;
+				Matcher matcher;
+				//#빈칸확인
 				if(e.equals("")||pass.equals("")||pass_re.equals("")||name.equals("")||tel.equals(""))
 				{
-					//빈칸을 확인하세요
+				
 					JOptionPane.showMessageDialog(null, "빈칸없이 입력하세요");
+					check = false;
 				}
-				else
+				//#중복이메일 체크
+				/*else if(!e.isEmpty())
 				{
-					if(pass.equals(pass_re))
+					userFile userFile = new userFile();
+					userList userlist = userFile.fileRead();
+					
+						
+					for(int i = 0; i<userlist.size(); i++)
 					{
-						gui.Cjoin(e, pass_re, name,  tel);
-						gui.moveMain();
+						if(userlist.getUser(i).getEmail() == e)
+						{
+							JOptionPane.showMessageDialog(null, "E-mail이 중복됩니다.");
+							check = false;
+						}
+						else 
+						{
+							if(check == false)
+								check = false;
+							else check = true;
+						}
 					}
-					else
+				}
+				*/
+				//#이메일이 전부 알파벳과 숫자로 이루어져있는가
+				if(!e.isEmpty())
+				{
+					System.out.println("1");
+					pattern  = Pattern.compile("^[a-zA-Z0-9]*$");
+					matcher = pattern.matcher(e);
+					if(!matcher.matches())
 					{
-						//비번틀리니 확인하세요
-						JOptionPane.showMessageDialog(null, "비밀번호와 비밀번호확인이\n서로 다릅니다.");
+						JOptionPane.showMessageDialog(null, "E-mail은 영문자만 가능 합니다");
+						check = false;
 					}
+					else 
+					{
+						if(check == false)
+							check = false;
+						else check = true;
+					}
+					
+					
+				}
+				
+				
+				//#이메일 길이확인(6자이상)
+				if(e.length() < 6)
+				{
+					System.out.println("2");
+					JOptionPane.showMessageDialog(null, "E-mail을 6자리 이상으로 입력해주세요");
+					check = false;
+				}
+			
+				//#비밀번호 6자리 이상 12자리 이하
+				if(pass.length() < 6 || pass.length() > 12)
+				{
+					System.out.println("3");
+					JOptionPane.showMessageDialog(null, "비밀번호는 6자이상 12자 이하로 입력해주세요");
+					check = false;
+				}
+				
+				//#비밀번호 재 입력 확인
+				if(!pass.equals(pass_re))
+				{
+					System.out.println("4");
+					
+					JOptionPane.showMessageDialog(null, "비밀번호와 비밀번호확인이\n서로 다릅니다.");
+					check = false;
+				}
+				
+				//#이름은 한글과 영문자만 가능
+				if(!name.isEmpty())
+				{
+					System.out.println("5");
+					pattern = Pattern.compile("^[가-힣a-zA-Z]*$");
+					matcher = pattern.matcher(name);
+					if(!matcher.matches()){
+						JOptionPane.showMessageDialog(null, "이름은 한글과 영문자만 가능합니다");
+						check = false;
+					}
+					else 
+					{
+						if(check == false)
+							check = false;
+						else check = true;
+					}
+				}
+					
+				
+				//#연락처는 숫자만으로 이루어져야한다.
+				if(!tel.isEmpty())
+				{
+					System.out.println("6");
+					pattern = Pattern.compile("^[0-9]*$");
+					matcher = pattern.matcher(tel);
+					if(!matcher.matches()){
+						JOptionPane.showMessageDialog(null, "연락처는 숫자만 입력해주세요");
+						check = false;
+					}
+					else 
+					{
+						if(check == false)
+							check = false;
+						else check = true;
+					}
+					
+				}
+				//#모두 통과 다음 화면으로 넘어간다.
+				if(check == true)
+				{
+					System.out.println("7");
+					JOptionPane.showMessageDialog(null, "회원가입되었습니다.");
+					gui.Cjoin(e, pass_re, name,  tel);
+					gui.moveMain();
+					
 				}
 			}
+				
 		});
 
 		add(btnMenu);
