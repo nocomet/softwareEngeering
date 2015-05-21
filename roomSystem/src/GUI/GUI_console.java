@@ -9,6 +9,7 @@ import javax.swing.JOptionPane;
 
 import Foundation.CbookList;
 import Foundation.roomList;
+import Foundation.userList;
 import PhysicalArchitecture.Client;
 import ProblemDomain.User;
 import ProblemDomain.bookedRoom;
@@ -264,9 +265,32 @@ public class GUI_console implements Serializable {
 		frame.setContentPane(my);
 		frame.setVisible(true);
 	}
+	//# 기능 구현을 위한 userlist받는 함수 생성
+	public userList getUserListResponse()
+	{
+		userList booklist = client.getcControl().getUserListResponce();
+		return booklist;
+	}
 	//------------------------------------------------//
 	public static GUI_console getInstance()
 	{
 		return gui_console;
 	}
+
+	//# 서버로 부터 userlist를 받는 함수
+	public void getUserListFromServer()
+	{
+		String console = "#UserList";
+		client.sendToServer(console);
+	}
+
+	//# admin 관리 페이지로 이동하는 함수
+	public void moveAdminPage() {
+		// TODO Auto-gmenerated method stub
+		A_mainPage my = new A_mainPage();
+		frame.setContentPane(my);
+		frame.setVisible(true);
+	}
+
+	
 }

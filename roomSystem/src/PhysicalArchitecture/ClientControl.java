@@ -4,15 +4,19 @@ import java.util.ArrayList;
 
 import Foundation.CbookList;
 import Foundation.roomList;
+import Foundation.userList;
 import ProblemDomain.User;
 
 public class ClientControl {
 
+	
 	// server로 부터 받는 자료들을 임시 저장하는 collector.
 	private ArrayList<roomList> RList;
 	private ArrayList<String> SList;
 	private ArrayList<User> UList;
 	private ArrayList<CbookList> BList;
+	private ArrayList<userList> ULList;
+	
 	private ArrayList<String> bookResult;
 	
 	
@@ -22,6 +26,7 @@ public class ClientControl {
 		SList=new ArrayList<String>();
 		UList=new ArrayList<User>();
 		BList=new ArrayList<CbookList>();
+		ULList=new ArrayList<userList>();
 		bookResult=new ArrayList<String>();
 	}	
 	public void addRoomList(roomList roomlist)
@@ -219,5 +224,33 @@ public class ClientControl {
 		RList=new ArrayList<roomList>();
 		SList=new ArrayList<String>();
 		UList=new ArrayList<User>();
+	}
+	
+	//# userlist가 도착할때까지 기다리는 함수
+	public userList getUserListResponce()
+	{
+		int num=1;
+		System.out.println();
+		while(true)
+		{
+			try {
+				
+				System.out.print(num+" ");
+				num++;
+				Thread.sleep(10);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			if(!ULList.isEmpty())
+			{
+				userList list=ULList.get(0);
+				ULList.remove(0);
+				System.out.println();
+				return list;
+			}
+		}
+		
 	}
 }

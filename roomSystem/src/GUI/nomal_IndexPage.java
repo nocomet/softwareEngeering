@@ -15,12 +15,16 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
+import ProblemDomain.admin;
+
 public class nomal_IndexPage extends JPanel {
 
 	private JPanel contentPane;
 	private JTextField email_txt;
 	private JPasswordField pw_txt;
 	private JButton btnLogin;
+	private JButton btnJoin;
+	private JButton btnAdminLogin;
 	
 	private GUI_console gui;
 	public nomal_IndexPage() {
@@ -34,8 +38,9 @@ public class nomal_IndexPage extends JPanel {
 		email_txt = new JTextField();
 		JLabel lblPassword = new JLabel("Password");
 		pw_txt = new JPasswordField();
-		JButton btnJoin = new JButton("JOIN");
+		btnJoin = new JButton("JOIN");
 		btnLogin = new JButton("LOGIN");
+		btnAdminLogin = new JButton("ADMIN");
 
 		// component 위치 및 속성 정하기
 		lblLogin.setBounds(395, 125, 31, 15);
@@ -67,6 +72,11 @@ public class nomal_IndexPage extends JPanel {
 		btnLogin.setBackground(new Color(52, 152, 219));
 		btnLogin.setBounds(405, 355, 215, 47);
 
+		btnAdminLogin.setForeground(Color.white);
+		btnAdminLogin.setFont(new Font("돋움", Font.PLAIN, 15));
+		btnAdminLogin.setBackground(Color.GRAY);
+		btnAdminLogin.setBounds(242, 430, 215, 47);
+		
 		// button Listener
 		btnJoin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -85,6 +95,22 @@ public class nomal_IndexPage extends JPanel {
 				}
 			}
 		});
+		btnAdminLogin.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				String adminCode = JOptionPane.showInputDialog("Push admin code");
+				admin temp=new admin();
+				if(adminCode.equals(temp.getAdminCode()))
+				{
+					//# 어드민 로그인
+					gui.moveAdminPage();
+				}
+				else
+				{
+					//# 실패
+					
+				}
+			}
+		});
 		//javax.swing.UIManager.put("Button.defaultButtonFollowsFocus", true); 
 		// JPanel에 add
 		add(lblLogin);
@@ -94,7 +120,8 @@ public class nomal_IndexPage extends JPanel {
 		add(pw_txt);
 		add(btnJoin);
 		add(btnLogin);
-
+		add(btnAdminLogin);
+		
 		JLabel background = new JLabel();
 		background.setIcon(new ImageIcon("./src/index.png"));
 		background.setBounds(0, 0, 700, 550);
@@ -102,3 +129,4 @@ public class nomal_IndexPage extends JPanel {
 	}
 	
 }
+
