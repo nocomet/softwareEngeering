@@ -22,10 +22,14 @@ import javax.swing.SwingConstants;
 
 import net.miginfocom.swing.MigLayout;
 import Foundation.CbookList;
+import ProblemDomain.bookStateType;
 import ProblemDomain.bookedRoom;
 import ProblemDomain.conferenceRoom;
 //#흔정 2015 05 21 수정
-public class C_mybookInfo extends JPanel {
+/*#	노혜성 2015 05 25
+	예약 정보 상태확인을 위한 implements 추가
+*/
+public class C_mybookInfo extends JPanel implements bookStateType {
 	private JTextField num_txt;
 	private JPanel table_p = new JPanel();
 	private JScrollPane scroll = new JScrollPane(table_p,
@@ -149,11 +153,18 @@ public class C_mybookInfo extends JPanel {
 			row_p.add(lblState, "cell 2 0,alignx center");
 			lblState.setFont(new Font("돋움", Font.PLAIN, 12));
 
-			if(booklist.getBook(i).getState()==1){
-				lblState.setText("결재승인");
+			if(booklist.getBook(i).getState()==waitCharge){
+				lblState.setText("결재대기");
+				lblState.setForeground(Color.red);
+			}
+			if(booklist.getBook(i).getState()==waitCancel){
+				lblState.setText("취소대기");
+				lblState.setForeground(Color.ORANGE);
+			}
+			if(booklist.getBook(i).getState()==BOOKED){
+				lblState.setText("예약완료");
 				lblState.setForeground(Color.blue);
 			}
-
 			//예약일 추가
 			JLabel lbldate = new JLabel("예약일: "+booklist.getBook(i).getyear()+"."+booklist.getBook(i).getmonth()+"."+booklist.getBook(i).getday());
 			lbldate.setHorizontalAlignment(SwingConstants.CENTER);
@@ -183,13 +194,18 @@ public class C_mybookInfo extends JPanel {
 					result = JOptionPane.showOptionDialog(null, "취소하시겠습니까?", " ", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, buttons, "아니요");
 					if(result == 0)
 					{
-						int roomnum = booklist.getBook(Integer.valueOf(hiddenNumber.getText())).getroomNum();
-						int year = booklist.getBook(Integer.valueOf(hiddenNumber.getText())).getyear();
-						int month =  booklist.getBook(Integer.valueOf(hiddenNumber.getText())).getmonth();
-						int day = booklist.getBook(Integer.valueOf(hiddenNumber.getText())).getday();
-						gui.cancelBook(roomnum, year, month, day);
-
-						btnSearch.doClick();
+//						int roomnum = booklist.getBook(Integer.valueOf(hiddenNumber.getText())).getroomNum();
+//						int year = booklist.getBook(Integer.valueOf(hiddenNumber.getText())).getyear();
+//						int month =  booklist.getBook(Integer.valueOf(hiddenNumber.getText())).getmonth();
+//						int day = booklist.getBook(Integer.valueOf(hiddenNumber.getText())).getday();
+//						gui.cancelBook(roomnum, year, month, day);
+//
+//						btnSearch.doClick();
+						bookedRoom temp = booklist.getBook(Integer.valueOf(hiddenNumber.getText()));
+						temp.setState(waitCancel);
+						booklist.setBook(Integer.valueOf(hiddenNumber.getText()), temp);
+						gui.sendToServerBookList(booklist);
+					
 					}
 				}
 			});
@@ -202,15 +218,10 @@ public class C_mybookInfo extends JPanel {
 
 
 					bookedRoom temp = booklist.getBook(Integer.valueOf(hiddenNumber.getText()));
-					temp.setState((result==0)?1:0);
+					temp.setState((result==0)?BOOKED:waitCancel);
 					booklist.setBook(Integer.valueOf(hiddenNumber.getText()), temp);
 					gui.sendToServerBookList(booklist);
 
-					if(booklist.getBook(Integer.valueOf(hiddenNumber.getText())).getState() == 1)
-					{
-						lblState.setText("결재승인");
-						lblState.setForeground(Color.blue);
-					}
 				}
 			});
 		}

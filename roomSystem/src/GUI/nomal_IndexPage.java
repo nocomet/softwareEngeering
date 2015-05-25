@@ -97,17 +97,20 @@ public class nomal_IndexPage extends JPanel {
 		});
 		btnAdminLogin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				String adminCode = JOptionPane.showInputDialog("Push admin code");
-				admin temp=new admin();
-				if(adminCode.equals(temp.getAdminCode()))
+				String adminCode = JOptionPane.showInputDialog("Admin code 입력하세요");
+				if(adminCode!=null)
 				{
-					//# 어드민 로그인
-					gui.moveAdminPage();
-				}
-				else
-				{
-					//# 실패
-					
+					admin temp=new admin();
+					if(adminCode.equals(temp.getAdminCode()))
+					{
+						//# 어드민 로그인
+						gui.moveAdminPage();
+					}
+					else
+					{
+						//# 실패
+						JOptionPane.showMessageDialog(null,"코드를 확인하세요.");
+					}
 				}
 			}
 		});

@@ -2,7 +2,7 @@ package ProblemDomain;
 
 import java.io.Serializable;
 
-public class User implements Serializable, stateType{
+public class User implements Serializable, userStateType{
 	
 	private String email;
 	private String password;
@@ -17,7 +17,7 @@ public class User implements Serializable, stateType{
 		this.password = password;
 		this.name=name;
 		this.phoneNumber=phoneNumber;
-		state=stateType.NEW;
+		state=userStateType.NEW;
 	}
 	public String getEmail() {
 		return email;

@@ -2,7 +2,7 @@ package ProblemDomain;
 
 import java.io.Serializable;
 
-public class bookedRoom implements Serializable
+public class bookedRoom implements Serializable, bookStateType
 {
 	private String ownerEmail;
 	private String email;
@@ -11,9 +11,7 @@ public class bookedRoom implements Serializable
 	private int day;
 	private int roomNum;
 	private int state;
-	final int booked=0;
-	final int charged=1;
-	final int blocked=2;
+
 	
 	public bookedRoom(String email, String ownerEmail,int year, int month, int day, int roomNum)
 	{
@@ -23,7 +21,7 @@ public class bookedRoom implements Serializable
 		this.month = month;
 		this.day =day;
 		this.roomNum = roomNum;	
-		this.state = 0;
+		this.state = waitCharge;
 	}	
 	public boolean equalBook(bookedRoom room)
 	{

@@ -22,10 +22,14 @@ import javax.swing.SwingConstants;
 
 import net.miginfocom.swing.MigLayout;
 import Foundation.CbookList;
+import ProblemDomain.bookStateType;
 import ProblemDomain.bookedRoom;
 import ProblemDomain.conferenceRoom;
 //#흔정 2015 05 21 수정
-public class B_mybookInfo extends JPanel {
+/*#	노혜성 2015 05 25
+	예약 정보 상태확인을 위한 implements 추가
+*/
+public class B_mybookInfo extends JPanel implements bookStateType {
 	private JTextField num_txt;
 	private JPanel table_p = new JPanel();
 	private JScrollPane scroll = new JScrollPane(table_p,
@@ -149,13 +153,18 @@ public class B_mybookInfo extends JPanel {
 			row_p.add(lblState, "cell 2 0,alignx center");
 			lblState.setFont(new Font("돋움", Font.PLAIN, 12));
 
-			if(booklist.getBook(i).getState()==1){
-				lblState.setText("결재승인");
-				lblState.setForeground(Color.blue);
+			if(booklist.getBook(i).getState()==waitCharge){
+				lblState.setText("결재대기");
+				lblState.setForeground(Color.red);
 			}
-			if(booklist.getBook(i).getState()==2){
-				lblState.setText("다른예약");
+			if(booklist.getBook(i).getState()==waitCancel){
+				lblState.setText("취소대기");
 				lblState.setForeground(Color.ORANGE);
+				lblState.setFont(new Font("돋움", Font.BOLD, 12));
+			}
+			if(booklist.getBook(i).getState()==BOOKED){
+				lblState.setText("예약완료");
+				lblState.setForeground(Color.blue);
 				lblState.setFont(new Font("돋움", Font.BOLD, 12));
 			}
 			//예약일 추가

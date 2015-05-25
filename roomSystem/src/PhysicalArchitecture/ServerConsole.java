@@ -14,9 +14,9 @@ import ProblemDomain.bookedRoom;
 import ProblemDomain.companyUser;
 import ProblemDomain.conferenceRoom;
 import ProblemDomain.personalUser;
-import ProblemDomain.stateType;
+import ProblemDomain.userStateType;
 //#흔정 2015 05 21 수정
-public class ServerConsole implements stateType {
+public class ServerConsole implements userStateType {
 	private ObjectOutputStream objOutput;
 
 
@@ -184,7 +184,7 @@ public class ServerConsole implements stateType {
 		String city = token[1];
 		String district = token[2];
 
-		if(token.length==2)
+		if(token.length==3)
 			num="인원선택안함";
 		else
 			num = token[3];//#흔정

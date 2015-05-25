@@ -12,7 +12,7 @@ package ProblemDomain;
 		- int BAD
 	
 */
-public interface stateType {
+public interface userStateType {
 	int NEW=1, OLD=2, BAD=3;
 	
 }

@@ -18,11 +18,12 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 import net.miginfocom.swing.MigLayout;
+import Foundation.CbookList;
 import Foundation.userList;
-import ProblemDomain.User;
-import ProblemDomain.stateType;
+import ProblemDomain.bookStateType;
+import ProblemDomain.userStateType;
 
-public class A_mainPage extends JPanel implements stateType  {
+public class A_mainPage extends JPanel implements userStateType, bookStateType  {
 
 	private GUI_console gui;
 	private JButton btnA;
@@ -106,7 +107,11 @@ public class A_mainPage extends JPanel implements stateType  {
 		btnC.setBackground(Color.GRAY);
 		btnC.setBounds(70+140+70+140+70, 120, 140, 47);
 		add(btnC);
-
+		btnC.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				btnCClick();
+			}
+		});
 
 
 		btnD= new JButton("돌아가기");
@@ -120,7 +125,7 @@ public class A_mainPage extends JPanel implements stateType  {
 				gui.moveMain();
 			}
 		});
-		
+
 
 	}
 	public void btnAclick()
@@ -131,11 +136,11 @@ public class A_mainPage extends JPanel implements stateType  {
 		for(int i = 0 ; i < userlist.size(); i++)
 		{
 
-			final PanelTest row_p=addResultPanel(userlist, i);
+			final UserPanelSet row_p=addResultUserPanel(userlist, i);
 			row_p.panel.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseClicked(MouseEvent e) {
-					
+
 					int result;
 					if(row_p.user.getUser(row_p.index).getState()==OLD)
 					{
@@ -173,7 +178,7 @@ public class A_mainPage extends JPanel implements stateType  {
 							row_p.panel.setBackground(new Color(235,235,235));		
 						}
 					}
-					
+
 				}
 			});
 
@@ -188,7 +193,7 @@ public class A_mainPage extends JPanel implements stateType  {
 		{
 			if(userlist.getUser(i).getState()==NEW)
 			{
-				final PanelTest row_p=addResultPanel(userlist, i);
+				final UserPanelSet row_p=addResultUserPanel(userlist, i);
 				row_p.panel.addMouseListener(new MouseAdapter() {
 					@Override
 					public void mouseClicked(MouseEvent e) {
@@ -216,9 +221,47 @@ public class A_mainPage extends JPanel implements stateType  {
 			}
 		}
 	}
-	public PanelTest addResultPanel(userList list, int i)
+	public void btnCClick()
 	{
-		
+		table_p.removeAll();
+		gui.getBookListFromServer();
+		final CbookList booklist=gui.getBookListResponse();
+		int i=0;
+		for(i= 0 ; i < booklist.size(); i++)
+		{
+			if(booklist.getBook(i).getState()==waitCancel)
+			{
+				final BookPanelSet row_p=addResultBookPanel(booklist, i);
+
+				row_p.panel.addMouseListener(new MouseAdapter() {
+					@Override
+					public void mouseClicked(MouseEvent e) {
+						int result;
+						row_p.panel.setBackground(new Color(254,240,254));
+						result =JOptionPane.showConfirmDialog(null,"취소승인하시겠습니까?", "취소승인",JOptionPane.YES_NO_OPTION);
+						if(result==0)
+						{
+							booklist.deleteBook(row_p.index);
+
+							//#서버로 보내서 userlist 저장해야.
+							gui.sendToServerBookList(booklist);
+							btnCClick();
+						}
+						else
+						{
+							row_p.panel.setBackground(new Color(235,235,235));					
+						}
+					}
+
+				});
+			}
+		}
+		if(i==0)
+			table_p.removeAll();
+	}
+	public UserPanelSet addResultUserPanel(userList list, int i)
+	{
+
 		final JPanel row_p = new JPanel();
 		row_p.setBackground(new Color(235,235,235));	
 		//System.out.println(userlist.getUser(i).getName());
@@ -251,7 +294,42 @@ public class A_mainPage extends JPanel implements stateType  {
 		state.setForeground(Color.RED);
 		state.setFont(new Font("돋움", Font.PLAIN, 14));
 
-		return new PanelTest(row_p, list,i);
+		return new UserPanelSet(row_p, list,i);
+
+	}
+	public BookPanelSet addResultBookPanel(CbookList booklist, int i)
+	{
+
+		final JPanel row_p = new JPanel();
+		row_p.setBackground(new Color(235,235,235));	
+		//System.out.println(userlist.getUser(i).getName());
+		table_p.add(row_p);
+		//row_p.setLayout(new MigLayout("", "[120px][510]", "[100px]"));
+		row_p.setLayout(new MigLayout("", "[100px][50]", "[50px]"));
+		//row_p.setLayout(new FlowLayout());
+		row_p.setSize(110, 44);
+		JLabel email = new JLabel("회의실 Owner E-mail :  "+booklist.getBook(i).getOwnerEmail());
+		row_p.add(email, "flowy,cell 1 0,alignx left,growy");
+		email.setForeground(new Color(44, 62, 80));
+		email.setFont(new Font("돋움", Font.PLAIN, 12));				
+		JLabel name = new JLabel("대여자 User E-mail:  "+booklist.getBook(i).getEmail());
+		row_p.add(name, "flowy,cell 1 0,alignx left,growy");
+		name.setForeground(new Color(44, 62, 80));
+		name.setFont(new Font("돋움", Font.PLAIN, 12));
+		JLabel number = new JLabel("예약날짜 :  "+booklist.getBook(i).getyear()+"/"+booklist.getBook(i).getmonth()+"/"+booklist.getBook(i).getday());
+		row_p.add(number, "flowy,cell 1 0,alignx left,growy");					
+		number.setForeground(new Color(44, 62, 80));
+		number.setFont(new Font("돋움", Font.PLAIN, 12));
+		String line="";
+		if(booklist.getBook(i).getState()==waitCancel)
+			line="취소대기";
+
+		JLabel state = new JLabel("   예약 상태:  "+line);
+		row_p.add(state, "cell 5 0,grow");						
+		state.setForeground(Color.RED);
+		state.setFont(new Font("돋움", Font.PLAIN, 14));
+
+		return new BookPanelSet(row_p, booklist,i);
 
 	}
 }
