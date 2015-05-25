@@ -1,6 +1,7 @@
 //05_25 이신영
 //일반사용자 회원정보수정
 //GUI수정, 회원탈퇴 미 구현
+//구현완료
 
 
 package GUI;
@@ -106,19 +107,21 @@ public class C_InfocPage extends JPanel {
 		lbltel.setBounds(197, 307, 36, 15);
 		add(lbltel);
 
+		String phone = gui.getUser().getPhoneNumber();
+		System.out.println(">>>>>"+phone);
+		String[] tokenP = phone.split("-");
 
-		tel_txt1 = new JTextField(gui.getUser().getPhoneNumber());
+		tel_txt1 = new JTextField(tokenP[0]);
 		tel_txt1.setColumns(10);
 		tel_txt1.setBounds(245, 307, 50, 30);
 		add(tel_txt1);
-	
 
-		tel_txt2 = new JTextField(gui.getUser().getPhoneNumber());
+		tel_txt2 = new JTextField(tokenP[1]);
 		tel_txt2.setColumns(10);
 		tel_txt2.setBounds(300, 307, 50, 30);
 		add(tel_txt2);
 		
-		tel_txt3 = new JTextField(gui.getUser().getPhoneNumber());
+		tel_txt3 = new JTextField(tokenP[2]);
 		tel_txt3.setColumns(10);
 		tel_txt3.setBounds(355, 307, 50, 30);
 		add(tel_txt3);
@@ -148,8 +151,29 @@ public class C_InfocPage extends JPanel {
 				
 				userFile userfile = new userFile();
 				userList userlist = new userList();
+				User user = null;
+				int Userindex = -1;
+				userlist = userfile.fileRead();
 				
-				JOptionPane.showMessageDialog(null, "탈퇴되었습니다.");
+				String email = email_txt.getText();
+				for(int i=1; i<userlist.size(); i++)
+				{
+					if(email.equals(userlist.getUser(i).getEmail()))
+					{
+							user = userlist.getUser(i);
+							Userindex = i;
+					}
+					
+				}
+				
+				if(user == null || Userindex == -1)
+					JOptionPane.showMessageDialog(null, "탈퇴되지 않았습니다.");
+				else
+				{
+					userlist.deleteUser(Userindex);
+					userfile.fileSave(userlist);
+					JOptionPane.showMessageDialog(null, "탈퇴되었습니다.");
+				}
 				gui.moveMain();
 				
 			}

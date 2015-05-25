@@ -1,7 +1,7 @@
 //05_25 이신영
 //기업사용자 회원정보수정
 //GUI수정, 회원탈퇴 미 구현
-
+//구현완료
 package GUI;
 
 import java.awt.Color;
@@ -19,6 +19,9 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
+import DataManagement.userFile;
+import Foundation.userList;
+import ProblemDomain.User;
 import ProblemDomain.companyUser;
 
 public class B_InfobPage extends JPanel {
@@ -117,10 +120,24 @@ public class B_InfobPage extends JPanel {
 		lbltel.setBounds(197, 337, 36, 15);
 		add(lbltel);
 
-		tel_txt1 = new JTextField(user.getPhoneNumber());
+		String phone = user.getPhoneNumber();
+		String[] tokenP = phone.split("-");
+		
+		
+		tel_txt1 = new JTextField(tokenP[0]);
 		tel_txt1.setColumns(10);
-		tel_txt1.setBounds(245, 330, 225, 30);
+		tel_txt1.setBounds(245, 330, 50, 30);
 		add(tel_txt1);
+		
+		tel_txt2 = new JTextField(tokenP[1]);
+		tel_txt2.setColumns(10);
+		tel_txt2.setBounds(300, 330, 50, 30);
+		add(tel_txt2);
+		
+		tel_txt2 = new JTextField(tokenP[2]);
+		tel_txt2.setColumns(10);
+		tel_txt2.setBounds(355, 330, 50, 30);
+		add(tel_txt2);
 		
 
 
@@ -141,6 +158,43 @@ public class B_InfobPage extends JPanel {
 		btndisconnect.setFont(new Font("돋움", Font.PLAIN, 15));
 		btndisconnect.setBackground(new Color(52, 152, 219));
 		btndisconnect.setBounds(240, 430, 215, 47);
+
+		btndisconnect.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				
+				userFile userfile = new userFile();
+				userList userlist = new userList();
+				User user = null;
+				int Userindex = -1;
+				userlist = userfile.fileRead();
+				
+				String email = email_txt.getText();
+				for(int i=1; i<userlist.size(); i++)
+				{
+					if(email.equals(userlist.getUser(i).getEmail()))
+					{
+							user = userlist.getUser(i);
+							Userindex = i;
+					}
+					
+				}
+				
+				if(user == null || Userindex == -1)
+					JOptionPane.showMessageDialog(null, "탈퇴되지 않았습니다.");
+				else
+				{
+					userlist.deleteUser(Userindex);
+					userfile.fileSave(userlist);
+					JOptionPane.showMessageDialog(null, "탈퇴되었습니다.");
+				}
+				gui.moveMain();
+				
+			}
+		});
+		
+		
 		
 		// button Listener
 		btnUpd.addActionListener(new ActionListener() {
