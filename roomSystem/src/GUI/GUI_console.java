@@ -91,9 +91,9 @@ public class GUI_console implements Serializable {
 		String console = "#search" + date + "%"+ city + "%" + district + "%" + num;
 		client.sendToServer(console);
 	}
-	public void recommendSecond(String date, String city, String district, String num)//#흔정 ~ 파라미터 고침
+	public void recommendSecond(String date, String city, String district, String num)//#흔정 새로운 기능
 	{
-		String console = "#recommendSecond" + date + "%"+ city + "%" + district + "%" + num;
+		String console = "#rcmd" + date + "%"+ city + "%" + district + "%" + num;
 		client.sendToServer(console);
 	}
 	public void updateInfo(String e, String oripw,String pass, String name, String tel)

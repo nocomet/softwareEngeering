@@ -31,6 +31,7 @@ public class ClientControl {
 	}	
 	public void addRoomList(roomList roomlist)
 	{
+		if(roomlist == null) System.out.println("null");
 		RList.add(roomlist);
 	}
 	public void addString(String string)
@@ -103,7 +104,7 @@ public class ClientControl {
 		while(true)
 		{
 			try {
-				
+				System.out.print("waitting roomList...");		//# test용
 				System.out.print(num+" ");
 				num++;
 				Thread.sleep(10);
@@ -154,7 +155,7 @@ public class ClientControl {
 		while(true)
 		{
 			try {
-				
+				System.out.print("roomList를 기다립니다");
 				System.out.print(num+" ");
 				num++;
 				Thread.sleep(10);

@@ -93,14 +93,14 @@ public class C_searchPage extends JPanel {
 		cbyear.setBackground(Color.WHITE);
 		cbyear.setFont(new Font("돋움", Font.PLAIN, 12));
 		cbyear.setModel(new DefaultComboBoxModel(
-				new String[] {"2014", "2015" }));
+				new String[] {"-1","2014", "2015" }));
 		cbyear.setBounds(66, 135, 55, 21);
 		add(cbyear);
 
 		final JComboBox cbmonth = new JComboBox();
 		cbmonth.setBackground(Color.WHITE);
 		cbmonth.setFont(new Font("돋움", Font.PLAIN, 12));
-		cbmonth.setModel(new DefaultComboBoxModel(new String[] { "1", "2", "3",
+		cbmonth.setModel(new DefaultComboBoxModel(new String[] {"-1", "1", "2", "3",
 				"4", "5", "6", "7", "8", "9", "10", "11", "12" }));
 		cbmonth.setBounds(133, 135, 55, 21);
 		add(cbmonth);
@@ -108,7 +108,7 @@ public class C_searchPage extends JPanel {
 		final JComboBox cbday = new JComboBox();
 		cbday.setBackground(Color.WHITE);
 		cbday.setFont(new Font("돋움", Font.PLAIN, 12));
-		cbday.setModel(new DefaultComboBoxModel(new String[] { "1", "2", "3",
+		cbday.setModel(new DefaultComboBoxModel(new String[] {"-1", "1", "2", "3",
 				"4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14",
 				"15", "16", "17", "18", "19", "20", "21", "22", "23", "24",
 				"25", "26", "27", "28", "29", "30", "31" }));
@@ -211,12 +211,15 @@ public class C_searchPage extends JPanel {
 						temp+=newNum;
 						gui.searchRoom(date, city, district, temp);*/
 						
-						gui.recommendSecond(date, city, district, num);
+						//gui.recommendSecond(date, city, district, num);
+						gui.searchRoom(date, city, district, num);						
 						roomList templist = gui.getRoomListResponse();
-						resultPrint(templist);	
+						if(templist.getSize() == 0)
+							JOptionPane.showMessageDialog(null, "검색된 결과가 없습니다.\n 다시 검색해 주세요.");
+						else resultPrint(templist);	
 					}
 					else
-					{
+					{	
 						//아니요면 아무일도 일어나지 않는다.
 					}					
 				}
@@ -243,7 +246,7 @@ public class C_searchPage extends JPanel {
 
 		table_p.removeAll();
 		for (int i = 0; i < roomlist.size(); i++) {
-			JPanel row_p = new JPanel();
+			final JPanel row_p = new JPanel();
 			table_p.add(row_p);
 			final conferenceRoom room=roomlist.getRoom(i);
 			row_p.setLayout(new MigLayout("", "[120px][510]", "[100px]"));
@@ -290,6 +293,12 @@ public class C_searchPage extends JPanel {
 					gui.getRoomListFromServer();
 					gui.moveCalendar(roomNum);
 				}
+				public void mouseEntered(MouseEvent e){
+					row_p.setBackground(Color.GRAY);
+				}
+				 public void mouseExited(MouseEvent e){
+					 row_p.setBackground(Color.white);
+				 }
 			});
 
 		}

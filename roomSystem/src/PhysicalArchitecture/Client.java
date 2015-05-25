@@ -106,9 +106,11 @@ class clientRead extends Thread
 				if(temp instanceof roomList)
 				{					
 					roomList roomlist=new roomList();
-					roomlist = (roomList) temp;
+					
+					if(((roomList) temp).getSize() > 0	&& temp !=null)			//#null일경우 받지 않는다.
+						roomlist = (roomList) temp;
 					System.out.println("-----서버로부터 룸리스트를 받음");
-					cControl.addRoomList(roomlist);					
+					cControl.addRoomList(roomlist);			
 				}
 				else if(temp instanceof User)
 				{

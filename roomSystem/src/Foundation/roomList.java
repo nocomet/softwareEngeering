@@ -20,6 +20,11 @@ public class roomList implements Serializable{
 	}
 
 	public conferenceRoom getRoom(int i) {
+	if(roomlist.size() <= i)
+	{
+		System.out.println("¹èº¸´Ù ¹è²ÅÀÌ ´õ Å®´Ï´Ù");
+		return null;
+	}
 		return roomlist.get(i);
 	}
 
