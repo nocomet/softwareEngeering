@@ -6,6 +6,8 @@ import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
@@ -19,8 +21,26 @@ import Foundation.roomList;
 import ProblemDomain.conferenceRoom;
 
 //#흔정 2015 05 21 수정
+//#흔정 2015 05 25 수정
 public class B_InputPage extends JPanel{
 
+	private static final String[] cityNames = {"선택","서울 특별시","인천 광역시","광주 광역시","울산 광역시 ","대전 광역시","대구 광역시 ","부산 광역시"};
+	private static final String[] nullNames = {"선택"};
+	private static final String[] seoulDistrictNames = {"선택","도봉구", "강북구", "노원구", "은평구","성북구","동대문구","중량구","종로구","서대문구"
+														, "마포구", "용산구", "중구", "성동구", "광진구"
+															,"강서구", "양천구", "구로구", "영등포구", "동작구", "금천구", "관악구", "서초구 "
+																	,"강남구","송파구", "강동구"};
+	private static final String[] incheonDistrictNames = {"선택","동구","남구","연수구","남동구","계양구","서구","중구","부평구","강화군","옹진군"};
+	private static final String[] gwangjuDistrictNames = {"선택","북구","동구","서구","남구","광산구"};
+	private static final String[] ulsanDistrictNames = {"선택","중구","동구","울주군","남구","북구"};
+	private static final String[] daejeonDistrictNames = {"선택","동구","중구","서구","유성구","대덕구"};	
+	private static final String[] deagueDistrictNames = {"선택","북구","동구","서구","중구","남구","달성구","수성구","달성군"};
+	private static final String[] busanDistrictNames = {"선택","동구","영도구","부산진구","동래구","서구","남구","북구","해운대구","금정구","강서구"
+															,"연제구","수영구", "사상구", "기장구","기장군","중구","사하구"};
+	private static final String[][] districtNames = {nullNames, seoulDistrictNames, incheonDistrictNames, gwangjuDistrictNames, ulsanDistrictNames 
+										,daejeonDistrictNames, deagueDistrictNames, busanDistrictNames};	
+	int choice =0;
+		
 	private JPanel contentPane;
 	private JTextField room_txt;
 	private JTextField price_txt;
@@ -60,28 +80,41 @@ public class B_InputPage extends JPanel{
 		lblAddr.setBounds(130, 181, 24, 15);
 		add(lblAddr);
 
-		JComboBox cbAddr1 = new JComboBox();
-		cbAddr1.setBackground(Color.WHITE);
-		cbAddr1.setFont(new Font("돋움", Font.PLAIN, 12));
-		cbAddr1.setModel(new DefaultComboBoxModel(new String[] { "서울", "부산", "대구", "우리집" }));
-		cbAddr1.setBounds(166, 173, 65, 30);
-		add(cbAddr1);
+		final JComboBox cityName = new JComboBox(cityNames);
+		cityName.setBackground(Color.WHITE);
+		cityName.setFont(new Font("돋움", Font.PLAIN, 12));
+		//cityName.setModel(new DefaultComboBoxModel(new String[] { "서울", "부산", "대구", "우리집" }));
+		cityName.setBounds(166, 173, 100, 30);
+		add(cityName);
 
-		JComboBox cbAddr2 = new JComboBox();
-		cbAddr2.setFont(new Font("돋움", Font.PLAIN, 12));
-		cbAddr2.setBackground(Color.WHITE);
-		cbAddr2.setBounds(243, 173, 65, 30);
-		add(cbAddr2);
-
-		addr_txt1 = new JTextField();
-		addr_txt1.setColumns(8);
-		addr_txt1.setBounds(300, 174, 253, 30);
-		add(addr_txt1);
+		final JComboBox districtName = new JComboBox(districtNames[choice]);
+		districtName.setFont(new Font("돋움", Font.PLAIN, 12));
+		districtName.setBackground(Color.WHITE);
+		districtName.setBounds(280, 173, 140, 30);
+		add(districtName);
 		
-		addr_txt2 = new JTextField();
-		addr_txt2.setColumns(8);
-		addr_txt2.setBounds(310, 174, 253, 30);
-		add(addr_txt2);
+		cityName.addItemListener(new ItemListener() {
+			//@Override
+			public void itemStateChanged(ItemEvent arg0) {		
+				if(arg0.getStateChange() == ItemEvent.SELECTED)
+				{				
+					districtName.removeAllItems();
+					choice = cityName.getSelectedIndex();							
+					for(int i=0; i< districtNames[choice].length;i++)
+						districtName.addItem(districtNames[choice][i]);																		
+				}			
+			}
+		});
+
+		//addr_txt1 = new JTextField();
+		//addr_txt1.setColumns(8);
+		//addr_txt1.setBounds(300, 174, 253, 30);
+		//add(addr_txt1);
+		
+		//addr_txt2 = new JTextField();
+		//addr_txt2.setColumns(8);
+		//addr_txt2.setBounds(310, 174, 253, 30);
+		//add(addr_txt2);
 
 		JLabel lblNum = new JLabel("수용인원");
 		lblNum.setForeground(new Color(44, 62, 80));
@@ -152,8 +185,9 @@ public class B_InputPage extends JPanel{
 				String buildingname = room_txt.getText();
 //				String address = addr_txt.getText();		#삭제
 				
-				String city = addr_txt1.getText();//		#추가
-				String district = addr_txt2.getText();//		#추가
+				//#흔정
+				String city = cityName.getSelectedItem().toString();//		#추가
+				String district = districtName.getSelectedItem().toString();//		#추가
 				
 				String acceptpeonum= num_txt.getText();
 				String Rentcost = price_txt.getText();

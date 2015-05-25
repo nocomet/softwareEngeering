@@ -1,5 +1,6 @@
 package GUI;
 //#흔정 2015 05 21 수정
+//#흔정 2015 05 25 수정
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -9,6 +10,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -27,75 +30,25 @@ import net.miginfocom.swing.MigLayout;
 import Foundation.roomList;
 import ProblemDomain.conferenceRoom;
 
-enum Addr1 {
-	선택, 서울특별시, 부산광역시, 대구광역시, 인천광역시, 광주광역시, 대전광역시, 울산광역시, 경기도, 강원도, 충청북도, 충청남도, 전라북도, 전라남도, 경상북도, 경상남도, 제주도;
-}
-
-enum SAddr1 {// 서울특별시
-	선택, 강남구, 강동구, 강서구, 강북구, 관악구, 광진구, 구로구, 금천구, 노원구, 동대문구, 도봉구, 동작구, 마포구, 서대문구, 성동구, 성북구, 서초구, 송파구, 영등포구, 용산구, 양천구, 은평구, 종로구, 중구, 중랑구
-}
-
-enum SAddr2 {// 부산광역시
-	선택, 부산
-}
-
-enum SAddr3 {// 대구광역시
-	선택, 대구
-}
-
-enum SAddr4 {// 인천광역시
-	선택, 인천
-}
-
-enum SAddr5 {// 광주광역시
-	선택, 광주
-}
-
-enum SAddr6 {// 대전광역시
-	선택, 대전
-}
-
-enum SAddr7 {// 울산광역시
-	선택, 울산
-}
-
-enum SAddr8 {// 경기도
-	선택, 수원시, 성남시, 의정부시, 안양시, 부천시, 광명시, 평택시, 동두천시, 안산시, 고양시, 과천시, 구리시, 남양주시, 오산시, 시흥시, 군포시, 의왕시, 하남시, 용인시, 파주시, 김포시, 이천시, 화성시, 광주시, 양주시, 포천시, 여주군, 연천군, 가평군, 양평군
-}
-
-enum SAddr9 {// 강원도
-	선택, 춘천시, 원주시, 강릉시, 동해시, 태백시, 속초시, 삼척시, 홍천군, 횡성군, 영월군, 평창군, 정선군, 철원군, 화천군, 양구군, 인제군, 고성군, 양양군
-}
-
-enum SAddr10 {// 충청북도
-	선택, 청주시, 충주시, 제천시, 청원군, 보은군, 영동군, 옥천군, 진천군, 괴산군, 증평군, 음성군, 단양군
-}
-
-enum SAddr11 {// 충청남도
-	선택, 천안시, 공주시, 보령시, 아산시, 서산시, 논산시, 계룡시, 금산군, 연기군, 부여군, 서천군, 청양군, 홍성군, 예산군, 태안군, 당진군
-}
-
-enum SAddr12 {// 전라북도
-	선택, 전주시, 군산시, 익산시, 정읍시, 남원시, 김제시, 완주군, 진안군, 무주군, 장수군, 임실군, 순창군, 고창군, 부안군
-}
-
-enum SAddr13 {// 전라남도
-	선택, 목포시, 여수시, 순천시, 나주시, 광양시, 담양군, 곡성군, 구례군, 소흥군, 보성군, 화순군, 장흥군, 강진군, 해남군, 영암군, 무안군, 함평군, 영광군, 장성군, 완도군, 진도군, 신안군
-}
-
-enum SAddr14 {// 경상북도
-	선택, 포항시, 경주시, 김천시, 안동시, 구미시, 영주시, 상주시, 문경시, 경산시, 군위군, 의성군, 청송군, 영양군, 영덕군, 청도군, 고령군, 성주군, 칠곡군, 예천군, 봉화군, 울진군, 울릉군
-}
-
-enum SAddr15 {// 경상남도
-	선택, 창원시, 마산시, 진주시, 진해시, 통영시, 사천시, 김해시, 밀양시, 거제시, 양산시, 의령군, 함안군, 창녕군, 고성군, 남해군, 하동군, 산청군, 함양군, 거창군, 합천군
-}
-
-enum SAddr16 {// 제주도
-	선택, 제주시, 서귀포시, 남제주군, 북제주군
-}
-
 public class C_searchPage extends JPanel {
+	
+	private static final String[] cityNames = {"선택","서울 특별시","인천 광역시","광주 광역시","울산 광역시 ","대전 광역시","대구 광역시 ","부산 광역시"};
+	private static final String[] nullNames = {"선택"};
+	private static final String[] seoulDistrictNames = {"선택","도봉구", "강북구", "노원구", "은평구","성북구","동대문구","중량구","종로구","서대문구"
+														, "마포구", "용산구", "중구", "성동구", "광진구"
+															,"강서구", "양천구", "구로구", "영등포구", "동작구", "금천구", "관악구", "서초구 "
+																	,"강남구","송파구", "강동구"};
+	private static final String[] incheonDistrictNames = {"선택","동구","남구","연수구","남동구","계양구","서구","중구","부평구","강화군","옹진군"};
+	private static final String[] gwangjuDistrictNames = {"선택","북구","동구","서구","남구","광산구"};
+	private static final String[] ulsanDistrictNames = {"선택","중구","동구","울주군","남구","북구"};
+	private static final String[] daejeonDistrictNames = {"선택","동구","중구","서구","유성구","대덕구"};	
+	private static final String[] deagueDistrictNames = {"선택","북구","동구","서구","중구","남구","달성구","수성구","달성군"};
+	private static final String[] busanDistrictNames = {"선택","동구","영도구","부산진구","동래구","서구","남구","북구","해운대구","금정구","강서구"
+															,"연제구","수영구", "사상구", "기장구","기장군","중구","사하구"};
+	private static final String[][] districtNames = {nullNames, seoulDistrictNames, incheonDistrictNames, gwangjuDistrictNames, ulsanDistrictNames 
+										,daejeonDistrictNames, deagueDistrictNames, busanDistrictNames};	
+	int choice =0;
+	
 	private JTextField num_txt;
 	private JPanel table_p = new JPanel();
 	private JScrollPane scroll = new JScrollPane(table_p,
@@ -168,82 +121,34 @@ public class C_searchPage extends JPanel {
 		lblSAddr.setBounds(267, 136, 24, 20);
 		add(lblSAddr);
 
-		final JComboBox cbAddr1 = new JComboBox();
-		cbAddr1.setBackground(Color.WHITE);
-		cbAddr1.setFont(new Font("돋움", Font.PLAIN, 12));
-		cbAddr1.setModel(new DefaultComboBoxModel(Addr1.values()));
-		cbAddr1.setBounds(303, 136, 90, 21);
+		final JComboBox cityName = new JComboBox(cityNames);
+		cityName.setBackground(Color.WHITE);
+		cityName.setFont(new Font("돋움", Font.PLAIN, 12));
+		//cityName.setModel(new DefaultComboBoxModel(cityName.values()));
+		cityName.setBounds(303, 136, 90, 21);
 
-		final JComboBox cbAddr2 = new JComboBox();
-		cbAddr2.setBackground(Color.WHITE);
-		cbAddr2.setFont(new Font("돋움", Font.PLAIN, 12));
-		cbAddr2.setBounds(401, 136, 68, 21);
-		cbAddr2.setModel(new DefaultComboBoxModel(new String[] { "선택" }));
+		final JComboBox districtName = new JComboBox(districtNames[choice]);
+		districtName.setBackground(Color.WHITE);
+		districtName.setFont(new Font("돋움", Font.PLAIN, 12));
+		districtName.setBounds(401, 136, 68, 21);
+		//districtName.setModel(new DefaultComboBoxModel(new String[] { "선택" }));
 
-		cbAddr1.addFocusListener(new FocusAdapter() {
-			@Override
-			public void focusLost(FocusEvent arg0) {
-				switch (Addr1.valueOf(cbAddr1.getSelectedItem().toString())
-						.ordinal()) {
-						case 1:
-							cbAddr2.setModel(new DefaultComboBoxModel(SAddr1.values()));
-							break;
-						case 2:
-							cbAddr2.setModel(new DefaultComboBoxModel(SAddr2.values()));
-							break;
-						case 3:
-							cbAddr2.setModel(new DefaultComboBoxModel(SAddr3.values()));
-							break;
-						case 4:
-							cbAddr2.setModel(new DefaultComboBoxModel(SAddr4.values()));
-							break;
-						case 5:
-							cbAddr2.setModel(new DefaultComboBoxModel(SAddr5.values()));
-							break;
-						case 6:
-							cbAddr2.setModel(new DefaultComboBoxModel(SAddr6.values()));
-							break;
-						case 7:
-							cbAddr2.setModel(new DefaultComboBoxModel(SAddr7.values()));
-							break;
-						case 8:
-							cbAddr2.setModel(new DefaultComboBoxModel(SAddr8.values()));
-							break;
-						case 9:
-							cbAddr2.setModel(new DefaultComboBoxModel(SAddr9.values()));
-							break;
-						case 10:
-							cbAddr2.setModel(new DefaultComboBoxModel(SAddr10.values()));
-							break;
-						case 11:
-							cbAddr2.setModel(new DefaultComboBoxModel(SAddr11.values()));
-							break;
-						case 12:
-							cbAddr2.setModel(new DefaultComboBoxModel(SAddr12.values()));
-							break;
-						case 13:
-							cbAddr2.setModel(new DefaultComboBoxModel(SAddr13.values()));
-							break;
-						case 14:
-							cbAddr2.setModel(new DefaultComboBoxModel(SAddr14.values()));
-							break;
-						case 15:
-							cbAddr2.setModel(new DefaultComboBoxModel(SAddr15.values()));
-							break;
-						case 16:
-							cbAddr2.setModel(new DefaultComboBoxModel(SAddr16.values()));
-							break;
-						default:
-							cbAddr2.setModel(new DefaultComboBoxModel(
-									new String[] { "선택" }));
-							break;
-				}
+		cityName.addItemListener(new ItemListener() {
+			//@Override
+			public void itemStateChanged(ItemEvent arg0) {		
+				if(arg0.getStateChange() == ItemEvent.SELECTED)
+				{				
+					districtName.removeAllItems();
+					choice = cityName.getSelectedIndex();							
+					for(int i=0; i< districtNames[choice].length;i++)
+						districtName.addItem(districtNames[choice][i]);																		
+				}			
 			}
 		});
 
-		cbAddr2.setVisible(true);
-		add(cbAddr1);
-		add(cbAddr2);
+		districtName.setVisible(true);
+		add(cityName);
+		add(districtName);
 
 		JLabel lblSNum = new JLabel("인원");
 		lblSNum.setForeground(new Color(44, 62, 80));
@@ -282,10 +187,10 @@ public class C_searchPage extends JPanel {
 						+ cbday.getSelectedItem().toString();
 
 				String city;
-				city = cbAddr1.getSelectedItem().toString();
+				city = cityName.getSelectedItem().toString();
 				
 				String district;
-				district = cbAddr2.getSelectedItem().toString();
+				district = districtName.getSelectedItem().toString();
 
 				String num;
 				num = num_txt.getText();
