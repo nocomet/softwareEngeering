@@ -108,7 +108,7 @@ public class C_InfocPage extends JPanel {
 		add(lbltel);
 
 		String phone = gui.getUser().getPhoneNumber();
-		System.out.println(">>>>>"+phone);
+
 		String[] tokenP = phone.split("-");
 
 		tel_txt1 = new JTextField(tokenP[0]);

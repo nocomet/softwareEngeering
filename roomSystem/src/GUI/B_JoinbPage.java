@@ -334,9 +334,9 @@ public class B_JoinbPage extends JPanel {
 				if(check == true)
 				{
 					String email = e+"@"+eaddress;
-					System.out.println(">>>"+eaddress);
+					String phone = tel1 + "-" + tel2 + "-" + tel3;
 					JOptionPane.showMessageDialog(null, "회원가입되었습니다.");
-					gui.Cjoin(email, pass_re, name,  phonenum);
+					gui.Cjoin(email, pass_re, name,  phone);
 					gui.moveMain();
 					
 				}
