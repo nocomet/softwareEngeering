@@ -12,6 +12,7 @@ import Foundation.roomList;
 import Foundation.userList;
 import PhysicalArchitecture.Client;
 import ProblemDomain.User;
+import ProblemDomain.admin;
 import ProblemDomain.bookedRoom;
 import ProblemDomain.companyUser;
 import ProblemDomain.conferenceRoom;
@@ -21,8 +22,11 @@ public class GUI_console implements Serializable {
 	private JFrame frame;
 	private Client client;
 	private User user;
+	
 	private static GUI_console gui_console= new GUI_console();
 
+	//# admin 기능을 수행할 객체 생성
+	private admin admin;
 	private GUI_console()	{	 }
 
 	public void setClient(Client c)
@@ -114,6 +118,10 @@ public class GUI_console implements Serializable {
 	{
 		client.sendToServerBookList(booklist);
 	}
+	public void sendToSeverUserList(userList userlist)
+	{
+		client.sendToServer(userlist);      
+	}
 	public void getRoomListFromServer()
 	{
 		String console = "#RoomList";
@@ -124,6 +132,7 @@ public class GUI_console implements Serializable {
 		String console = "#BookList";
 		client.sendToServer(console);
 	}
+	
 	public void getBookListFromServerWithEmail()
 	{
 		String console = "#BookListWithEmail" + user.getEmail();

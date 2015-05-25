@@ -14,16 +14,17 @@ import ProblemDomain.bookedRoom;
 import ProblemDomain.companyUser;
 import ProblemDomain.conferenceRoom;
 import ProblemDomain.personalUser;
+import ProblemDomain.stateType;
 //#흔정 2015 05 21 수정
-public class ServerConsole {
+public class ServerConsole implements stateType {
 	private ObjectOutputStream objOutput;
-	
+
 
 	public ServerConsole(ObjectOutputStream objout)
 	{
 		objOutput=objout;
 	}
-	
+
 	// client에서 보낸 string 타입 명령어를 처리
 	public void handleMeg(String msg)
 	{
@@ -50,6 +51,11 @@ public class ServerConsole {
 			roomList roomlist=file.fileRead();
 			roomlist=file.fileRead();
 			sendToMessageOneClientRoomlist(roomlist);
+		} else if(msg.startsWith("#UserList")) {
+			//# userlist 보내는 쿼리문 처리
+			userFile file=new userFile();
+			userList userlist=file.fileRead();			
+			sendToMessageOneClientUserlist(userlist);
 		}else if(msg.startsWith("#BookListWithEmail")) {
 			booklistFile bfile = new booklistFile();
 			CbookList booklist = bfile.fileRead();
@@ -70,6 +76,8 @@ public class ServerConsole {
 			BookCancel(msg,roomlist,booklist);
 		}
 	}
+
+
 	public void handleRoom(conferenceRoom room)
 	{
 		roomFile file = new roomFile();
@@ -86,12 +94,12 @@ public class ServerConsole {
 		booklist.addBook(book);
 		file.fileSave(booklist);
 	}
-	
-	
+
+
 	//----------------function---------------//
 	//----------------기능적인 수행---------------//
 	//----------------function---------------//
-	
+
 	private void Login(String msg)
 	{
 		msg = msg.substring(6);
@@ -104,12 +112,26 @@ public class ServerConsole {
 		boolean empty = false;
 		for (int i = 0; i < userlist.size(); i++) {
 			if (loginUser.getEmail().equals(userlist.getUser(i).getEmail())) {
-				if (loginUser.getPassword().equals(
-						userlist.getUser(i).getPassword())) {
-					empty = true;
-					System.out.println("-----로그인되었음");
 
-					sendToClientUser(userlist.getUser(i));
+				if (loginUser.getPassword().equals(userlist.getUser(i).getPassword())) 
+				{
+					if(userlist.getUser(i).getState()==NEW)
+					{
+						empty = true;
+						sendToClientString("아직 승인 되지 않음.");
+					}
+					else if(userlist.getUser(i).getState()==BAD)
+					{	
+						empty = true;
+						sendToClientString("이용이 정지된 사용자 입니다.");
+
+					}
+					else{
+						empty = true;
+						System.out.println("-----로그인되었음");
+
+						sendToClientUser(userlist.getUser(i));
+					}
 					break;
 				} else {
 					empty = true;
@@ -157,11 +179,11 @@ public class ServerConsole {
 		String date = token[0];
 		//String address = token[1]; #삭제된 인자
 		String num;
-		
+
 		//#흔정~ 추가된 인자들
 		String city = token[1];
 		String district = token[2];
-		
+
 		if(token.length==2)
 			num="인원선택안함";
 		else
@@ -197,7 +219,7 @@ public class ServerConsole {
 		boolean checkDate = isDate;
 		boolean checkNum = isNum;
 		 */
-		
+
 		roomList temp = roomlist;
 		if (checkDate) {
 			String[] tok = date.split("#");
@@ -218,17 +240,17 @@ public class ServerConsole {
 		}
 		else
 		{
-				//나오면 안되는 error
+			//나오면 안되는 error
 		}
 		//#
-		
+
 		if (checkNum){
 			temp = searchForNum(num, temp);
 		}
 
 		return temp;
 	}
-	
+
 	/* # 삭제된 메소드
 	private roomList searchForAddress(String Add, roomList roomlist) {
 		roomList temp = new roomList();
@@ -246,12 +268,12 @@ public class ServerConsole {
 		for (int i = 0; i < roomlist.size(); i++) {
 			if (city.equals(roomlist.getRoom(i).getCity())) 
 				if(district.equals(roomlist.getRoom(i).getDistrict()))
-						temp.addRoom(roomlist.getRoom(i));
-			
+					temp.addRoom(roomlist.getRoom(i));
+
 		}
 		return temp;
 	}
-	
+
 	private roomList searchForCity(String city, roomList roomlist) {
 		roomList temp = new roomList();
 		for (int i = 0; i < roomlist.size(); i++) {
@@ -294,7 +316,7 @@ public class ServerConsole {
 		}
 		return temp;
 	}
-	
+
 	private void ViewList(String msg, roomList roomlist){
 		msg = msg.substring(9);
 		String[] token = msg.split("%");
@@ -380,7 +402,7 @@ public class ServerConsole {
 			}
 		}
 	}
-	
+
 	private void BookCancel(String msg, roomList roomlist, CbookList booklist) 
 	{
 		msg = msg.substring(11);
@@ -411,13 +433,13 @@ public class ServerConsole {
 		Rfile.fileSave(roomlist);
 		Bfile.fileSave(booklist);
 	}
-	
-	
+
+
 	//------------------send---------------//
 	//---------------client에게 전송-----------//
 	//------------------send---------------//
-	
-	
+
+
 	private void sendToClientUser(User user)
 	{
 		try {
@@ -451,5 +473,13 @@ public class ServerConsole {
 			e.printStackTrace();
 		}
 	}
+	private void sendToMessageOneClientUserlist(userList userlist) {
+		try {
+			objOutput.writeObject(userlist);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
+	}
 }

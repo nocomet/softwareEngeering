@@ -10,8 +10,10 @@ import java.util.ArrayList;
 
 import DataManagement.booklistFile;
 import DataManagement.roomFile;
+import DataManagement.userFile;
 import Foundation.CbookList;
 import Foundation.roomList;
+import Foundation.userList;
 import ProblemDomain.bookedRoom;
 import ProblemDomain.conferenceRoom;
 
@@ -143,7 +145,13 @@ class EchoThread extends Thread {
 					roomFile file=new roomFile();
 					file.fileSave((roomList)temp);
 					System.out.println("------룸리스트받아서 저장함");
-				}			
+				}	
+				else if(temp instanceof userList)
+				{
+					userFile file= new userFile();
+					file.fileSave((userList)temp);
+					System.out.println("------유저리스트받아서 저장함");
+				}
 				else if(temp instanceof conferenceRoom)
 				{
 					serverConsole.handleRoom((conferenceRoom)temp);

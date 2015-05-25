@@ -2,17 +2,22 @@ package ProblemDomain;
 
 import java.io.Serializable;
 
-public class User implements Serializable{
+public class User implements Serializable, stateType{
 	
 	private String email;
 	private String password;
 	private String name;
 	private String phoneNumber;
+	
+	//# 가입 승인 여부를 나타내는 변수, enum 타입 추가
+	private int state;
+
 	public User(String email, String password, String name, String phoneNumber) {
 		this.email = email;
 		this.password = password;
 		this.name=name;
 		this.phoneNumber=phoneNumber;
+		state=stateType.NEW;
 	}
 	public String getEmail() {
 		return email;
@@ -39,6 +44,12 @@ public class User implements Serializable{
 		this.phoneNumber = phoneNumber;
 	}
 
-
+	public int getState() {
+		return state;
+	}
+	public void setState(int state) {
+		this.state = state;
+	}
+	
 	
 }

@@ -49,7 +49,10 @@ public class ClientControl {
 	{
 		BList.add(booklist);
 	}
-	
+	public void addUserList(userList userlist)
+	{
+		ULList.add(userlist);
+	}
 	// 서버로부터 오기도 전에 collector로 접근하는 경우를 방지하기 위한 메소드
 	public Object getResponse()
 	{

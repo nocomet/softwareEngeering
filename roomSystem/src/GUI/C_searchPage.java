@@ -135,6 +135,7 @@ public class C_searchPage extends JPanel {
 		lblDate.setBounds(30, 135, 24, 20);
 		add(lblDate);
 
+		
 		final JComboBox cbyear = new JComboBox();
 		cbyear.setBackground(Color.WHITE);
 		cbyear.setFont(new Font("돋움", Font.PLAIN, 12));

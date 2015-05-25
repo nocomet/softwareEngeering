@@ -7,6 +7,7 @@ import java.net.Socket;
 
 import Foundation.CbookList;
 import Foundation.roomList;
+import Foundation.userList;
 import ProblemDomain.User;
 import ProblemDomain.bookedRoom;
 import ProblemDomain.conferenceRoom;
@@ -60,12 +61,17 @@ public class Client
 	{
 		clientW.sendToServerBookList(list);
 	}
+	public void sendToServer(userList userlist) 
+	{
+		clientW.sendToServerUserList(userlist);
+	}
 	public ClientControl getcControl() {
 		return cControl;
 	}
 	public void setcControl(ClientControl cControl) {
 		this.cControl = cControl;
 	}
+	
 }
 
 //
@@ -116,6 +122,12 @@ class clientRead extends Thread
 					System.out.println("-----서버로부터 예약 정보를 받음");
 					cControl.addBookList(booklist);
 				}
+				else if(temp instanceof userList)
+				{
+					userList userlist = (userList) temp;
+					System.out.println("-----서버로부터 회원 리스트를 받음");
+					cControl.addUserList(userlist);
+				}
 				else
 				{
 					String line = (String) temp;
@@ -160,6 +172,7 @@ class clientWrite extends Thread//서버로 메세지 보내기
 	private conferenceRoom console2;
 	private CbookList console3;
 	private bookedRoom console4;
+	private userList console5;
 	
 	// GUI와 backgound의 연동을 위한 제어 변수
 	// 멀티스레드 제어를 하기 위해 선언
@@ -168,6 +181,7 @@ class clientWrite extends Thread//서버로 메세지 보내기
 	private boolean sendToReadyRoom;
 	private boolean sendToReadyBook;
 	private boolean sendToReadybookedRoom;
+	private boolean sendToReadyUserlist;
 	
 	public clientWrite(Socket socket)
 	{
@@ -177,7 +191,9 @@ class clientWrite extends Thread//서버로 메세지 보내기
 		sendToReadyRoom=false;
 		sendToReadyBook=false;
 		sendToReadybookedRoom=false;
+		sendToReadyUserlist=false;
 	}
+	
 	public void run()
 	{
 		ObjectOutputStream out;
@@ -223,6 +239,12 @@ class clientWrite extends Thread//서버로 메세지 보내기
 					sendToReadybookedRoom=false;
 					System.out.println("-----server로 -bookedRoom-전송");               
 				}
+				while(sendToReadyUserlist==true)//& 보낼준비가 될때만 실행도록 하는 반복문
+				{
+					out.writeObject(console5);
+					sendToReadyUserlist=false;
+					System.out.println("-----server로 -Userlist-전송");               
+				}
 			}		
 
 
@@ -266,5 +288,9 @@ class clientWrite extends Thread//서버로 메세지 보내기
 	{
 		console4=book;
 		sendToReadybookedRoom=true;
+	}
+	public void sendToServerUserList(userList userlist) {
+		console5=userlist;
+		sendToReadyUserlist=true;
 	}
 }
