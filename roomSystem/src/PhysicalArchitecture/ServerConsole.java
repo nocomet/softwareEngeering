@@ -16,6 +16,7 @@ import ProblemDomain.conferenceRoom;
 import ProblemDomain.personalUser;
 import ProblemDomain.userStateType;
 //#흔정 2015 05 21 수정
+//#흔정 2015 05 25 수정
 public class ServerConsole implements userStateType {
 	private ObjectOutputStream objOutput;
 
@@ -39,7 +40,11 @@ public class ServerConsole implements userStateType {
 		} else if (msg.startsWith("#search")) {
 			roomFile file = new roomFile();
 			roomList roomlist=file.fileRead();
-			Search(msg,roomlist);			
+			Search(msg,roomlist);	
+		} else if (msg.startsWith("#recommendSecond")) {
+			roomFile file = new roomFile();
+			roomList roomlist=file.fileRead();
+			RecomendSecond(msg,roomlist);	
 		} else if(msg.startsWith("#ViewList")) {
 			roomFile file = new roomFile();
 			roomList roomlist=file.fileRead();
@@ -173,6 +178,46 @@ public class ServerConsole implements userStateType {
 	}
 
 	private void Search(String msg, roomList roomlist)
+	{
+		msg = msg.substring(7);
+		String[] token = msg.split("%");
+		String date = token[0];
+		//String address = token[1]; #삭제된 인자
+		String num;
+
+		//#흔정~ 추가된 인자들
+		String city = token[1];
+		String district = token[2];
+
+		if(token.length==3)
+			num="인원선택안함";
+		else
+			num = token[3];//#흔정
+
+		boolean isDate = true;
+		//boolean isAddress = true; #
+		boolean isCity = true;
+		boolean isDistrict = true;
+		boolean isNum = true;
+
+
+		if(city.equals("선택"))
+			isCity = false;
+		if(district.equals("선택"))
+			isDistrict = false;
+		//if (address.equals("선택선택"))			#
+		//	isAddress = false;					#
+		if (date.equals("2014#1#1"))
+			isDate = false;
+		if (num.equals("인원선택안함"))
+			isNum = false;
+
+		roomList temp = new roomList();
+		temp = SearchRoom(roomlist, city, district , date, num, isCity, isDistrict, isDate,//	#
+				isNum);
+		sendToMessageOneClientRoomlist(temp);
+	}
+	private void RecomendSecond(String msg, roomList roomlist)
 	{
 		msg = msg.substring(7);
 		String[] token = msg.split("%");

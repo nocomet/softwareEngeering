@@ -93,7 +93,7 @@ public class C_searchPage extends JPanel {
 		cbyear.setBackground(Color.WHITE);
 		cbyear.setFont(new Font("돋움", Font.PLAIN, 12));
 		cbyear.setModel(new DefaultComboBoxModel(
-				new String[] { "2014", "2015" }));
+				new String[] {"2014", "2015" }));
 		cbyear.setBounds(66, 135, 55, 21);
 		add(cbyear);
 
@@ -204,11 +204,14 @@ public class C_searchPage extends JPanel {
 					result = JOptionPane.showOptionDialog(null, "검색된 결과가 없습니다.\n차선책 검색을 하시겠습니까?", " ", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, buttons, "아니요");
 					if(result==0)
 					{
+						/*
 						int newNum=Integer.parseInt(num);
 						newNum+=5;
 						String temp="";
 						temp+=newNum;
-						gui.searchRoom(date, city, district, temp);
+						gui.searchRoom(date, city, district, temp);*/
+						
+						gui.recommendSecond(date, city, district, num);
 						roomList templist = gui.getRoomListResponse();
 						resultPrint(templist);	
 					}
@@ -219,7 +222,6 @@ public class C_searchPage extends JPanel {
 				}
 				else
 					resultPrint(roomlist);
-
 			}
 		});
 		btnMenu.addActionListener(new ActionListener() {

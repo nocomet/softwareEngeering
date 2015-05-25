@@ -6,7 +6,7 @@ import PhysicalArchitecture.Server;
 public class startServer {
 	public startServer()
 	{	
-		Server serverstart=new Server(11114);
+		Server serverstart=new Server(11184);
 		serverstart.start();
 	}
 	
