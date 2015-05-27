@@ -12,7 +12,7 @@ public class startClient {
 	
 	public startClient()
 	{
-		client=new Client("127.0.0.1", 11184);
+		client=new Client("127.0.0.1", 11134);
 
 		//GUI의 총 관리하는 FramePage class 할당	
 		nomal_FramePage frame = new nomal_FramePage();

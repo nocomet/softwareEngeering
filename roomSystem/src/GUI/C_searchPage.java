@@ -211,8 +211,8 @@ public class C_searchPage extends JPanel {
 						temp+=newNum;
 						gui.searchRoom(date, city, district, temp);*/
 						
-						//gui.recommendSecond(date, city, district, num);
-						gui.searchRoom(date, city, district, num);						
+						gui.recommendSecond(date, city, district, num);
+						//gui.searchRoom(date, city, district, num);						
 						roomList templist = gui.getRoomListResponse();
 						if(templist.getSize() == 0)
 							JOptionPane.showMessageDialog(null, "검색된 결과가 없습니다.\n 다시 검색해 주세요.");

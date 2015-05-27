@@ -93,7 +93,7 @@ public class GUI_console implements Serializable {
 	}
 	public void recommendSecond(String date, String city, String district, String num)//#흔정 새로운 기능
 	{
-		String console = "#rcmd" + date + "%"+ city + "%" + district + "%" + num;
+		String console = "#RCMD" + date + "%"+ city + "%" + district + "%" + num;
 		client.sendToServer(console);
 	}
 	public void updateInfo(String e, String oripw,String pass, String name, String tel)

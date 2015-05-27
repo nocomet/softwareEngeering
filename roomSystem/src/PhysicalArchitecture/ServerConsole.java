@@ -18,6 +18,7 @@ import ProblemDomain.userStateType;
 //#흔정 2015 05 21 수정
 //#흔정 2015 05 25 수정
 //#흔정 2015 05 26 수정
+//#흔정 2015 05 27 수정
 public class ServerConsole implements userStateType {
 	private ObjectOutputStream objOutput;
 	roomFile file = new roomFile();
@@ -41,7 +42,7 @@ public class ServerConsole implements userStateType {
 		} else if (msg.startsWith("#search")) {			
 			roomList roomlist=file.fileRead();
 			Search(msg,roomlist);	
-		} else if (msg.startsWith("#rcmd")) {//# 파일을 몇개나 만들어서 쓰는 이유가 있는가?
+		} else if (msg.startsWith("#RCMD")) {//# 파일을 몇개나 만들어서 쓰는 이유가 있는가?
 			//roomFile file = new roomFile();
 			roomList roomlist=file.fileRead();	
 			RecomendSecond(msg,roomlist);			
@@ -252,10 +253,10 @@ public class ServerConsole implements userStateType {
 		if (num.equals("-1"))
 			isNum = false;
 		
-		//roomList temp = new roomList();
-		//temp = SearchRoom(roomlist, city, district , date, num, isCity, isDistrict, isDate,//	#
-		//		isNum);
-		sendToMessageOneClientRoomlist(roomlist);
+		roomList temp = new roomList();
+		temp = RecommandRoom(roomlist, city, district , date, num, isCity, isDistrict, isDate,//	#
+				isNum);
+		sendToMessageOneClientRoomlist(temp);
 	}
 	//메소드 인자 변경
 	public roomList SearchRoom(roomList roomlist, String city, String district , String date, String num, boolean checkCity, boolean checkDistrict, boolean checkDate, boolean checkNum) 
@@ -263,7 +264,7 @@ public class ServerConsole implements userStateType {
 		roomList temp = roomlist;
 		
 		if(roomlist == null) return null;
-		/*
+		
 		if(checkDate){
 			String[] tok = date.split("\\#");
 			String year = tok[0];
@@ -271,7 +272,7 @@ public class ServerConsole implements userStateType {
 			String day = tok[2];
 			if(year.equals("-1") && month.equals("-1")&& day.equals("-1"))
 				temp=searchForDate(year,month,day, temp);
-		}*/
+		}
 		//# 메소드 변경 및 추가
 		if (checkCity && checkDistrict) {
 			temp = searchForCityNDistrict(city, district, temp);
@@ -290,6 +291,38 @@ public class ServerConsole implements userStateType {
 		if (checkNum){
 			temp = searchForNum(num, temp);
 		}
+		return temp;
+	}
+	public roomList RecommandRoom(roomList roomlist, String city, String district , String date, String num, boolean checkCity, boolean checkDistrict, boolean checkDate, boolean checkNum) 
+	{
+		roomList temp = roomlist;
+		
+		if(roomlist == null) return null;
+				
+		if(checkDate){
+			String[] tok = date.split("\\#");
+			String year = tok[0];
+			String month = tok[1];
+			String day = tok[2];
+			if(year.equals("-1") && month.equals("-1")&& day.equals("-1"))
+				temp=searchForDate(year,month,day, temp);
+		}
+		//# 메소드 변경 및 추가
+		if(checkCity){
+			temp = searchForCity(city, temp);
+		}
+		else if(checkDistrict){
+			//error	
+		}
+		else
+		{
+			//위치 선택하지 않음
+		}
+		
+		if (checkNum){
+			temp =  recommandForNum(num, temp);
+//			return temp;
+		}		
 		return temp;
 	}
 	// # 삭제된 메소드 roomList searchForAddress(String Add, roomList roomlist)
@@ -344,6 +377,19 @@ public class ServerConsole implements userStateType {
 		return temp;
 	}
 
+	private roomList recommandForNum(String num, roomList roomlist) {
+		roomList temp = new roomList();
+		
+		if(roomlist == null) return null;
+		for (int i = 0; i < roomlist.size(); i++) {
+			for(int j=0; j<Integer.parseInt(num); j++)
+			if ( Integer.parseInt(num) < Integer.parseInt(roomlist.getRoom(i).getAcceptPeoNum())) {
+				temp.addRoom(roomlist.getRoom(i));
+			}
+		}
+		return temp;
+	}
+
 	private roomList searchForNum(String num, roomList roomlist) {
 		roomList temp = new roomList();
 		
@@ -355,7 +401,7 @@ public class ServerConsole implements userStateType {
 		}
 		return temp;
 	}
-
+	
 	private void ViewList(String msg, roomList roomlist){
 		msg = msg.substring(9);
 		String[] token = msg.split("%");
