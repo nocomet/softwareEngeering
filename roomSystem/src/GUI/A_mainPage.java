@@ -20,6 +20,7 @@ import javax.swing.JScrollPane;
 import net.miginfocom.swing.MigLayout;
 import Foundation.CbookList;
 import Foundation.userList;
+import ProblemDomain.admin;
 import ProblemDomain.bookStateType;
 import ProblemDomain.userStateType;
 
@@ -39,7 +40,9 @@ public class A_mainPage extends JPanel implements userStateType, bookStateType  
 			JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
 			JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 
+	private admin superAdmin;
 	public A_mainPage() {
+		superAdmin=new admin();
 		gui=GUI_console.getInstance();
 		setLayout(null);
 
@@ -166,10 +169,12 @@ public class A_mainPage extends JPanel implements userStateType, bookStateType  
 						result = JOptionPane.showConfirmDialog(null,"제재를 푸시겠습니까?", "BAN",JOptionPane.YES_NO_OPTION);
 						if(result==0)
 						{
-							row_p.user.getUser(row_p.index).setState(OLD);
-
+							//row_p.user.getUser(row_p.index).setState(OLD);
+								
 							//#서버로 보내서 userlist 저장해야.
-							gui.sendToSeverUserList(row_p.user);
+							//gui.sendToSeverUserList(row_p.user);
+							
+							superAdmin.doBlock(gui, row_p.user, row_p.user.getUser(row_p.index));
 							table_p.removeAll();
 							btnAclick();
 						}
@@ -204,7 +209,8 @@ public class A_mainPage extends JPanel implements userStateType, bookStateType  
 							result =JOptionPane.showConfirmDialog(null,"회원가입을 승인하시겠습니까?", "승인",JOptionPane.YES_NO_OPTION);
 							if(result==0)
 							{
-								row_p.user.getUser(row_p.index).setState(OLD);
+								superAdmin.doApproval(gui, row_p.user, row_p.user.getUser(row_p.index));
+								//row_p.user.getUser(row_p.index).setState(OLD);
 
 								//#서버로 보내서 userlist 저장해야.
 								gui.sendToSeverUserList(row_p.user);

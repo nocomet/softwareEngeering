@@ -22,7 +22,7 @@ import GUI.GUI_console;
 		- doBlock() 불량회원 제재 (주요기능 d 관련 )
 */
 
-public class admin {
+public class admin implements userStateType {
 
 	private String adminCode;//# admin 계정의  code
 	private userList myUserList;
@@ -59,18 +59,19 @@ public class admin {
 		}
 		return myUserList;			
 	}
-	public void doApproval(User user)
-	{
-		// 변수로 받은 유저를 userlist에서 찾아서 set상태 해서 바꾼담에
-		// 서버로 보내서 저장하도록 해야함
-		
-		// 서버로 userlist보내서 저장하는 기능 구현해야함
+	public void doApproval(GUI_console gui,userList userlist, User user)
+	{		
+		user.setState(OLD);
+		gui.sendToSeverUserList(userlist);		
 	}
-	public void doBlock(User user)
+	public void doBlock(GUI_console gui,userList userlist, User user)
 	{
-		// 변수로 받은 유저를 userlist에서 찾아서 set상태 해서 바꾼담에
-		// 서버로 보내서 저장하도록 해야함
+		user.setState(OLD);
+		gui.sendToSeverUserList(userlist);
 		
-		// 서버로 userlist보내서 저장하는 기능 구현해야함
+	}
+	public void doCancelApproval(User user)
+	{
+		
 	}
 }
