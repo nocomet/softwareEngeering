@@ -21,7 +21,7 @@ import GUI.GUI_console;
 		- setApprovalToCancelSign 결재 취소 요청을 승인 ( 주요기능 c관련 )
 		- doBlock() 불량회원 제재 (주요기능 d 관련 )
 */
-
+//test용 코드 추가
 public class admin implements userStateType {
 
 	private String adminCode;//# admin 계정의  code
@@ -59,15 +59,15 @@ public class admin implements userStateType {
 		}
 		return myUserList;			
 	}
-	public void doApproval(GUI_console gui,userList userlist, User user)
+	public void doApproval(GUI_console gui,userList userlist, User user)//test용 코드 추가~ null 포인터시
 	{		
-		user.setState(OLD);
-		gui.sendToSeverUserList(userlist);		
+		user.setState(userStateType.OLD);
+		if(gui != null) gui.sendToSeverUserList(userlist);		
 	}
 	public void doBlock(GUI_console gui,userList userlist, User user)
 	{
-		user.setState(OLD);
-		gui.sendToSeverUserList(userlist);
+		user.setState(BAD);	//잘 못 된거 같아 수정
+		if(gui != null) gui.sendToSeverUserList(userlist);
 		
 	}
 	public void doCancelApproval(User user)

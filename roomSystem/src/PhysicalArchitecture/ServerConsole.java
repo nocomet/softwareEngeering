@@ -19,6 +19,7 @@ import ProblemDomain.userStateType;
 //#흔정 2015 05 25 수정
 //#흔정 2015 05 26 수정
 //#흔정 2015 05 27 수정
+//#흔정 2015 06 16 test중 수정 
 public class ServerConsole implements userStateType {
 	private ObjectOutputStream objOutput;
 	roomFile file = new roomFile();
@@ -106,42 +107,62 @@ public class ServerConsole implements userStateType {
 	//----------------기능적인 수행---------------//
 	//----------------function---------------//
 
-	private void Login(String msg)
+	public String Login(String msg) //06_16 test case  작성에 따른 return값 변경
 	{
 		msg = msg.substring(6);
 		String[] token = msg.split("%");
+		String result = "";		
+		
+		if(token[0].equals(""))//06_16 test case  작성에 따른 exception 추가
+		{
+			result ="아이디를 입력하세요";
+			sendToClientString(result);
+			
+			return result;	
+		}
+		else if(token.length == 1)//06_16 test case  작성에 따른 exception 추가
+		{
+			result ="비밀번호를 입력하세요";
+			sendToClientString(result);
+			
+			return result;	
+		}
+		
 		User loginUser = new User(token[0], token[1],"","");
-
 		userFile userFile = new userFile();
 		userList userlist = userFile.fileRead();
 
 		boolean empty = false;
+				
 		for (int i = 0; i < userlist.size(); i++) {
-			if (loginUser.getEmail().equals(userlist.getUser(i).getEmail())) {
+			if (loginUser.getEmail().equals(userlist.getUser(i).getEmail())){
 
 				if (loginUser.getPassword().equals(userlist.getUser(i).getPassword())) 
 				{
 					if(userlist.getUser(i).getState()==NEW)
 					{
 						empty = true;
-						sendToClientString("아직 승인 되지 않음.");
+						result = "아직 승인 되지 않음.";
+						sendToClientString(result);
 					}
 					else if(userlist.getUser(i).getState()==BAD)
 					{	
 						empty = true;
-						sendToClientString("이용이 정지된 사용자 입니다.");
+						result ="이용이 정지된 사용자 입니다.";
+						sendToClientString(result);
 
 					}
 					else{
 						empty = true;
-						System.out.println("-----로그인되었음");
-
+						result ="-----로그인되었음";
+						System.out.println(result);
 						sendToClientUser(userlist.getUser(i));
 					}
-					break;
-				} else {
+				} 
+				else {
 					empty = true;
-					sendToClientString("비밀번호오류");
+					result ="비밀번호오류";
+					sendToClientString(result);
 					break;
 				}
 
@@ -150,7 +171,11 @@ public class ServerConsole implements userStateType {
 			}
 		}
 		if (!empty)
-			sendToClientString("이메일을 찾을 수 없습니다.");
+		{
+			result ="이메일을 찾을 수 없습니다.";
+			sendToClientString(result);
+		}
+		return result;	
 	}
 	private void JoinC(String msg)
 	{
@@ -533,6 +558,10 @@ public class ServerConsole implements userStateType {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		catch(NullPointerException e)//06_16 test중 필요에 의해 
+		{
+			 System.out.println("test중 exception 처리");		 
+		}
 	}
 	private void sendToClientString(String line) {
 		try {
@@ -540,6 +569,10 @@ public class ServerConsole implements userStateType {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}
+		 catch(NullPointerException e)//06_16 test중 필요에 의해 
+		{
+			 System.out.println("test중 exception 처리");		 
 		}
 	}
 	private void sendToMessageOneClientRoomlist(roomList roomlist) {
