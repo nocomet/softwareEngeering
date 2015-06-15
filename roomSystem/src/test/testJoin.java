@@ -11,11 +11,6 @@ import ProblemDomain.User;
 public class testJoin {
 
 	@Test
-	public void test(){
-		User user = new User("lsy8795@naver.com", "qwerasdf!!","¿ÃΩ≈øµ","01055678795");
-	}
-	
-	@Test
 	public void testEmail() {
 	
 		User getUser = null;

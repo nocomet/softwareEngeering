@@ -68,7 +68,6 @@ public class admin {
 	}
 	public void doBlock(User user)
 	{
-
 		// 변수로 받은 유저를 userlist에서 찾아서 set상태 해서 바꾼담에
 		// 서버로 보내서 저장하도록 해야함
 		
