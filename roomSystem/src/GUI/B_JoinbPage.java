@@ -38,7 +38,7 @@ public class B_JoinbPage extends JPanel {
 	private JTextField tel_txt3;
 
 	private String phonenum ;
-	
+	private String businessNum;
 
 	
 	private GUI_console gui;
@@ -155,11 +155,14 @@ public class B_JoinbPage extends JPanel {
 		lblBN.setFont(new Font("돋움", Font.PLAIN, 12));
 		lblBN.setBounds(173, 340, 60, 15);
 		add(lblBN);
+		
 
 		bn_txt = new JTextField();
 		bn_txt.setColumns(10);
 		bn_txt.setBounds(245, 340, 225, 30);
+		businessNum = bn_txt.getText();
 		add(bn_txt);
+		
 
 	
 		JButton btnMenu = new JButton("MENU");
@@ -336,7 +339,7 @@ public class B_JoinbPage extends JPanel {
 					String email = e+"@"+eaddress;
 					String phone = tel1 + "-" + tel2 + "-" + tel3;
 					JOptionPane.showMessageDialog(null, "회원가입되었습니다.");
-					gui.Cjoin(email, pass_re, name,  phone);
+					gui.Bjoin(email, pass_re, name,  phone,businessNum);
 					gui.moveMain();
 					
 				}
