@@ -407,7 +407,6 @@ public class ServerConsole implements userStateType {
 		
 		if(roomlist == null) return null;
 		for (int i = 0; i < roomlist.size(); i++) {
-			for(int j=0; j<Integer.parseInt(num); j++)
 			if ( Integer.parseInt(num) < Integer.parseInt(roomlist.getRoom(i).getAcceptPeoNum())) {
 				temp.addRoom(roomlist.getRoom(i));
 			}

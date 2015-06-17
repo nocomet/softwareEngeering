@@ -24,7 +24,7 @@ import ProblemDomain.conferenceRoom;
 //#흔정 2015 05 25 수정
 public class B_InputPage extends JPanel{
 
-	private static final String[] cityNames = {"선택","서울 특별시","인천 광역시","광주 광역시","울산 광역시 ","대전 광역시","대구 광역시 ","부산 광역시"};
+	private static final String[] cityNames = {"선택","서울 특별시","인천 광역시","광주 광역시","울산 광역시 ","대전 광역시","대구 광역시","부산 광역시"};
 	private static final String[] nullNames = {"선택"};
 	private static final String[] seoulDistrictNames = {"선택","도봉구", "강북구", "노원구", "은평구","성북구","동대문구","중량구","종로구","서대문구"
 														, "마포구", "용산구", "중구", "성동구", "광진구"

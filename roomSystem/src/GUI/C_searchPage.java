@@ -32,12 +32,12 @@ import ProblemDomain.conferenceRoom;
 
 public class C_searchPage extends JPanel {
 	
-	private static final String[] cityNames = {"선택","서울 특별시","인천 광역시","광주 광역시","울산 광역시 ","대전 광역시","대구 광역시 ","부산 광역시"};
+	private static final String[] cityNames = {"선택","서울 특별시","인천 광역시","광주 광역시","울산 광역시 ","대전 광역시","대구 광역시","부산 광역시"};
 	private static final String[] nullNames = {"선택"};
 	private static final String[] seoulDistrictNames = {"선택","도봉구", "강북구", "노원구", "은평구","성북구","동대문구","중량구","종로구","서대문구"
 														, "마포구", "용산구", "중구", "성동구", "광진구"
 															,"강서구", "양천구", "구로구", "영등포구", "동작구", "금천구", "관악구", "서초구 "
-																	,"강남구","송파구", "강동구"};
+																,"강남구","송파구", "강동구"};
 	private static final String[] incheonDistrictNames = {"선택","동구","남구","연수구","남동구","계양구","서구","중구","부평구","강화군","옹진군"};
 	private static final String[] gwangjuDistrictNames = {"선택","북구","동구","서구","남구","광산구"};
 	private static final String[] ulsanDistrictNames = {"선택","중구","동구","울주군","남구","북구"};
